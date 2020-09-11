@@ -154,7 +154,6 @@ module ReactiveShipping
 
         event_key = nil
         @conf.dig(:events, :types).each do |key, val|
-          puts "event.downcase: #{event.downcase}"
           if event.downcase.include?(val) && !event.downcase.include?('estimated')
             event_key = key
             break
