@@ -163,7 +163,9 @@ module ReactiveShipping
         next if event_key.blank?
 
         location = event.downcase.split(@conf.dig(:events, :types, event_key)).last
-        location = location.downcase.include?('carrier') ? nil : parse_city_state(location.downcase.sub(event_key.to_s, ''))
+        location = location.downcase.sub(event_key.to_s, '')
+        location = location.gsub(',', '')
+        location = location.downcase.include?('carrier') ? nil : parse_city_state(location)
 
         event = event_key
         datetime_without_time_zone = parse_date(datetime_without_time_zone)
