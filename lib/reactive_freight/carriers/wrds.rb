@@ -115,10 +115,8 @@ module ReactiveShipping
       )
     end
 
-    def parse_city_state(str, options = {})
+    def parse_city_state(str)
       return nil if str.blank?
-
-      str = str.gsub(options[:remove], '').strip if options[:remove]
 
       Location.new(
         city: str.split(' ')[0].titleize,
@@ -156,7 +154,8 @@ module ReactiveShipping
 
         event_key = nil
         @conf.dig(:events, :types).each do |key, val|
-          if event.downcase.include? val && !event.downcase.include?('estimated')
+          puts "event.downcase: #{event.downcase}"
+          if event.downcase.include?(val) && !event.downcase.include?('estimated')
             event_key = key
             break
           end
@@ -165,7 +164,7 @@ module ReactiveShipping
         next if event_key.blank?
 
         location = event.downcase.split(@conf.dig(:events, :types, event_key)).last
-        location = location.downcase.include?('carrier') ? nil : parse_city_state(location, remove: event_key)
+        location = location.downcase.include?('carrier') ? nil : parse_city_state(location.downcase.sub(event_key.to_s, ''))
 
         event = event_key
         datetime_without_time_zone = parse_date(datetime_without_time_zone)
@@ -179,10 +178,6 @@ module ReactiveShipping
 
       actual_delivery_date = browser.element(xpath: '/html/body/form/div[3]/table[2]/tbody/tr[9]/td[2]/span').text
       actual_delivery_date = actual_delivery_date ? Date.strptime(actual_delivery_date, '%m/%d/%Y').to_s(:db) : nil
-      unless actual_delivery_date.blank?
-        shipment_events << ShipmentEvent.new(:delivered, actual_delivery_date, receiver_address)
-        status = :delivered
-      end
 
       shipment_events = shipment_events.sort_by(&:time)
 
