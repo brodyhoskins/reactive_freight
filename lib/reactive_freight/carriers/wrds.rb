@@ -115,8 +115,10 @@ module ReactiveShipping
       )
     end
 
-    def parse_city_state(str)
+    def parse_city_state(str, options = {})
       return nil if str.blank?
+
+      str = str.gsub(options[:remove], '').strip if options[:remove]
 
       Location.new(
         city: str.split(' ')[0].titleize,
@@ -163,7 +165,7 @@ module ReactiveShipping
         next if event_key.blank?
 
         location = event.downcase.split(@conf.dig(:events, :types, event_key)).last
-        location = location.downcase.include?('carrier') ? nil : parse_city_state(location)
+        location = location.downcase.include?('carrier') ? nil : parse_city_state(location, remove: event_key)
 
         event = event_key
         datetime_without_time_zone = parse_date(datetime_without_time_zone)
