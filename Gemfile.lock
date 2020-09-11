@@ -2,6 +2,12 @@ PATH
   remote: .
   specs:
     reactive_freight (0.0.1pre)
+      httparty (>= 0.10)
+      reactive_shipping (~> 3.0)
+      rmagick (~> 4.1)
+      savon (~> 2.0)
+      watir (~> 6.1)
+      webdrivers (~> 4.0)
 
 GEM
   remote: https://rubygems.org/
@@ -86,14 +92,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  bundler (~> 2.1.2)
-  httparty (~> 0.18)
   reactive_freight!
-  reactive_shipping (~> 3)
-  rmagick (~> 4.1)
-  savon (~> 2)
-  watir (~> 6.1)
-  webdrivers (~> 4.0)
 
 BUNDLED WITH
    2.1.2
