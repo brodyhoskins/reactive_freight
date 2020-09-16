@@ -19,7 +19,7 @@ module ReactiveShipping
     end
 
     def requirements
-      %i[customer_code]
+      %i[account]
     end
 
     # Documents
@@ -101,7 +101,7 @@ module ReactiveShipping
       shipment_detail = shipment_detail.join('|')
 
       {
-        customer_code: @options[:customer_code],
+        customer_code: @options[:account],
         origin_zip: origin.to_hash[:postal_code].to_s.upcase,
         destination_zip: destination.to_hash[:postal_code].to_s.upcase,
         shipment_detail: shipment_detail,
