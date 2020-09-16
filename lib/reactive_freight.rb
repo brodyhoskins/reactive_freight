@@ -11,6 +11,10 @@ require 'yaml'
 
 require 'reactive_shipping'
 require 'reactive_freight/package'
-require 'reactive_freight/carrier'
-require 'reactive_freight/carriers'
 require 'reactive_freight/shipment_event'
+
+require 'reactive_freight/carrier'
+require 'reactive_freight/platform'
+
+require 'reactive_freight/carriers'
+require 'reactive_freight/platforms'
