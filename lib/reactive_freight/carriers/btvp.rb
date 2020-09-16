@@ -193,7 +193,7 @@ module ReactiveShipping
                 haz: '', # Y if yes
                 pallets: packages.size,
                 pieces: packages.size,
-                weight: package.weight.convert_to(:lbs).to_s.to_f.round
+                weight: package.pounds.ceil
               }
             end
           }

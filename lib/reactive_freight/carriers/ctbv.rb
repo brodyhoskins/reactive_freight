@@ -67,7 +67,7 @@ module ReactiveShipping
         params << "&wpieces[#{i}]=1"
         params << "&wpallets[#{i}]=1"
         params << "&vclass[#{i}]=#{freight_class(package)}"
-        params << "&wweight[#{i}]=#{package.weight.convert_to(:lbs).value.to_f.round}"
+        params << "&wweight[#{i}]=#{package.pounds.ceil}"
       end
 
       longest_dimension = packages.inject([]) { |_arr, p| [p.inches[0], p.inches[1]] }.max.ceil

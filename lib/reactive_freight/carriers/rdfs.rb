@@ -143,7 +143,7 @@ module ReactiveShipping
             shipment_detail: packages.inject([]) do |arr, package|
               arr << {
                 'ActualClass' => freight_class(package),
-                'Weight' => package.weight.convert_to(:lbs).value.to_f.round
+                'Weight' => package.pounds.ceil
               }
             end
           },
