@@ -11,6 +11,8 @@ Features specific to ReactiveFreight:
 
 - Abstracted accessorials
 - Abstracted tracking events
+- Cubic feet and density calculations
+- Freight class calculations (and manual overriding)
 - Download scanned documents including bill of lading and/or proof of delivery where supported
 
 ## Supported Freight Carriers & Platforms
@@ -89,6 +91,10 @@ end
 packages = [
   ReactiveShipping::Package.new(371 * 16,            # 371 lbs
                                 [40, 48, 47],        # inches
+                                units: :imperial),
+  ReactiveShipping::Package.new(371 * 16,            # 371 lbs
+                                [40, 48, 47],        # inches
+                                freight_class: 125,  # override calculated freight class
                                 units: :imperial)
 ]
 
