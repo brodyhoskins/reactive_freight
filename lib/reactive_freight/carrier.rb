@@ -33,22 +33,6 @@ module ReactiveShipping
       true
     end
 
-    def freight_class(package)
-      if !self.class::REACTIVE_FREIGHT_CARRIER || !@conf.dig(:freight_classes)
-        raise NotImplementedError, "#{self.class.name}: #freight_class not supported"
-      end
-
-      # Do not override manually defined freight class
-      return package.freight_class unless package.freight_class.blank?
-
-      cached_density = package.density(rounded: false)
-      @conf.dig(:freight_classes).each do |map_row|
-        if (cached_density >= map_row[0]) && (cached_density < map_row[1])
-          return map_row[2].to_i == map_row[2] ? map_row[2].to_i : map_row[2]
-        end
-      end
-    end
-
     def find_bol(_tracking_number, _options = {})
       raise NotImplementedError, "#{self.class.name}: #find_bol not supported"
     end
