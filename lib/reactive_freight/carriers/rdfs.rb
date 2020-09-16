@@ -142,7 +142,7 @@ module ReactiveShipping
           shipment_details: {
             shipment_detail: packages.inject([]) do |arr, package|
               arr << {
-                'ActualClass' => freight_class(package),
+                'ActualClass' => package.freight_class,
                 'Weight' => package.pounds.ceil
               }
             end

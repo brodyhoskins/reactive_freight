@@ -188,7 +188,7 @@ module ReactiveShipping
             itemcount: packages.size,
             item: packages.inject([]) do |arr, package|
               arr << {
-                _class: freight_class(package),
+                _class: package.freight_class,
                 description: 'Freight'.upcase, # Required
                 haz: '', # Y if yes
                 pallets: packages.size,

@@ -127,40 +127,6 @@
     :picked_up: PU
     :trailer_closed: CLO
     :trailer_unloaded: UNL
-:freight_classes:
-  - - 0
-    - 1
-    - 400
-  - - 1
-    - 2
-    - 300
-  - - 2
-    - 4
-    - 250
-  - - 4
-    - 6
-    - 175
-  - - 6
-    - 8
-    - 125
-  - - 8
-    - 10
-    - 100
-  - - 10
-    - 12
-    - 92.5
-  - - 12
-    - 15
-    - 85
-  - - 15
-    - 22.5
-    - 70
-  - - 22.5
-    - 30
-    - 65
-  - - 30
-    - 35
-    - 99999
 :services:
   :types:
     - :standard_ltl

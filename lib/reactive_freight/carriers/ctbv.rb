@@ -66,7 +66,7 @@ module ReactiveShipping
         i += 1 # API starts at 1 (not 0)
         params << "&wpieces[#{i}]=1"
         params << "&wpallets[#{i}]=1"
-        params << "&vclass[#{i}]=#{freight_class(package)}"
+        params << "&vclass[#{i}]=#{package.freight_class}"
         params << "&wweight[#{i}]=#{package.pounds.ceil}"
       end
 
