@@ -1,0 +1,6 @@
+:api:
+  :domain: tracking.carrierlogistics.com
+  :endpoints:
+    :rates: /scripts/@CARRIER_CODE@.pol/ratequote.xml?
+  :use_ssl:
+    :rates: true
