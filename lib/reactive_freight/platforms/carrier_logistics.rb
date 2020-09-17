@@ -23,9 +23,9 @@ module ReactiveShipping
     # protected
 
     def build_url(action, options = {})
-      scheme = conf.dig(:api, :use_ssl, action) ? 'https://' : 'http://'
-      url = "#{scheme}#{conf.dig(:api, :domain)}#{conf.dig(:api, :endpoints, action)}"
-      url = url.sub('@CARRIER_CODE@', conf.dig(:api, :carrier_code)) if url.include?('@CARRIER_CODE@')
+      scheme = @conf.dig(:api, :use_ssl, action) ? 'https://' : 'http://'
+      url = "#{scheme}#{@conf.dig(:api, :domain)}#{@conf.dig(:api, :endpoints, action)}"
+      url = url.sub('@CARRIER_CODE@', @conf.dig(:api, :carrier_code)) if url.include?('@CARRIER_CODE@')
       url << options[:params] unless options[:params].blank?
       url
     end
@@ -99,7 +99,7 @@ module ReactiveShipping
         location = tr.css('td')[1].text
 
         event_key = nil
-        @conf.dig(:events, :types).each do |key, val|
+        @@conf.dig(:events, :types).each do |key, val|
           if event.downcase.include?(val) && !event.downcase.include?('estimated')
             event_key = key
             break
@@ -172,8 +172,8 @@ module ReactiveShipping
       unless _options[:accessorials].blank?
         serviceable_accessorials?(_options[:accessorials]) # raises InvalidArgumentError if _options[:accessorials] invalid
         _options[:accessorials].each do |a|
-          unless conf.dig(:accessorials, :unserviceable).include?(a)
-            accessorials << conf.dig(:accessorials, :mappable)[a]
+          unless @conf.dig(:accessorials, :unserviceable).include?(a)
+            accessorials << @conf.dig(:accessorials, :mappable)[a]
           end
         end
       end
