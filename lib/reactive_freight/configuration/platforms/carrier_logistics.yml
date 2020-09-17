@@ -2,7 +2,7 @@
   :domain: tracking.carrierlogistics.com
   :endpoints:
     :rates: /scripts/@CARRIER_CODE@.pol/ratequote.xml?
-    :track: /scripts/@CARRIER_CODE@.pol/facts.htm?startpage=protrace&pronum= 
+    :track: /scripts/@CARRIER_CODE@.pol/boldetail.htm?
   :use_ssl:
     :rates: true
     :track: true
@@ -11,7 +11,8 @@
     :arrived_at_terminal: trailer arrived
     :delivered: delivered
     :departed: trailer departed
+    :out_for_delivery: out for delivery
     :picked_up: picked up
     :pickup_scheduled: pickup request received
     :trailer_closed: loaded on trailer
-    :trailer_unloaded: freight unloaded
+    :trailer_unloaded: undisp
