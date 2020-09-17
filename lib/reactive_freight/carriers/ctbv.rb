@@ -104,7 +104,7 @@ module ReactiveShipping
           success = false
           message = response['error']
         else
-          cost = response.dig('ratequote', 'quotetotal').delete(',').to_f
+          cost = response.dig('ratequote', 'quotetotal').delete(',').delete('.').to_i
           days = response.dig('ratequote', 'busdays').to_i
           delivery_range = [days, days]
           if cost
