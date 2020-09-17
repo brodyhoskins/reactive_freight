@@ -12,10 +12,9 @@ module ReactiveShipping
 
       conf_path = File.join(__dir__, 'configuration', 'platforms', 'carrier_logistics.yml')
       @conf = YAML.safe_load(File.read(conf_path), permitted_classes: [Symbol])
-    end
 
-    def serviceable_accessorials?(_accessorials)
-      raise NotImplementedError, "#{self.class.name}: #serviceable_accessorials not supported"
+      conf_path = File.join(__dir__, 'configuration', 'carriers', "#{self.class.to_s.split('::')[1].downcase}.yml")
+      @conf = @conf.deep_merge(YAML.safe_load(File.read(conf_path), permitted_classes: [Symbol]))
     end
 
     def find_bol(_tracking_number, _options = {})

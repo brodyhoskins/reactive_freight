@@ -36,12 +36,6 @@ module ReactiveShipping
 
     # protected
 
-    def conf
-      conf_path = File.expand_path('..', __dir__)
-      conf_path = File.join(conf_path, 'configuration', 'carriers', "#{self.class.to_s.split('::')[1].downcase}.yml")
-      super.deep_merge(YAML.safe_load(File.read(conf_path), permitted_classes: [Symbol]))
-    end
-
     # Documents
 
     # Rates
