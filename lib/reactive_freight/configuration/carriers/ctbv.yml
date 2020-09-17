@@ -105,15 +105,6 @@
   :use_ssl:
     :rates: false
     :track: true
-:events:
-  :types:
-    :arrived_at_terminal: trailer arrived
-    :delivered: delivered; thank you for using the custom companies
-    :departed: trailer departed
-    :picked_up: picked up
-    :pickup_scheduled: pickup request received
-    :trailer_closed: loaded on trailer
-    :trailer_unloaded: freight unloaded
 :services:
   :types:
     - :standard_ltl
