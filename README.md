@@ -33,6 +33,8 @@ Carriers differ from platforms in that they have unique web services whereas pla
 
 ### Platforms
 
+* [Carrier Logistics](https://carrierlogistics.com)
+
 ## Versions
 
 [See releases](https://github.com/brodyhoskins/reactive_freight/releases)
