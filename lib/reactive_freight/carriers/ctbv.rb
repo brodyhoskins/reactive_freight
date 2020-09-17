@@ -70,13 +70,24 @@ module ReactiveShipping
         params << "&wweight[#{i}]=#{package.pounds.ceil}"
       end
 
-      longest_dimension = packages.inject([]) { |_arr, p| [p.inches[0], p.inches[1]] }.max.ceil
-      if longest_dimension > 144
-        params << '&OL=yes'
-      elsif longest_dimension >= 96 && longest_dimension <= 144
-        params << '&OL1=yes'
+      accessorials = []
+      unless _options[:accessorials].blank?
+        serviceable_accessorials?(_options[:accessorials]) # raises InvalidArgumentError if _options[:accessorials] invalid
+        _options[:accessorials].each do |a|
+          unless @conf.dig(:accessorials, :unserviceable).include?(a)
+            accessorials << @conf.dig(:accessorials, :mappable)[a]
+          end
+        end
       end
 
+      longest_dimension = packages.inject([]) { |_arr, p| [p.inches[0], p.inches[1]] }.max.ceil
+      if longest_dimension > 144
+        accessorials << '&OL=yes'
+      elsif longest_dimension >= 96 && longest_dimension <= 144
+        accessorials << '&OL1=yes'
+      end
+
+      params << accessorials.uniq.join
       params
     end
 
