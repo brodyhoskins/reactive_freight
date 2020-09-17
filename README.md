@@ -21,7 +21,7 @@ Features specific to ReactiveFreight:
 
 **In addition** to the carriers supported by [ReactiveShipping](https://github.com/realsubpop/reactive_shipping), ReactiveFreight supports the following carriers and platforms.
 
-Carriers differ from platforms in that they have unique web services whereas platforms host several carriers' web services on a single service (platform).
+Carriers differ from platforms in that they have unique web services whereas platforms host several carriers' web services on a single service (platform). Carriers however may extend platforms and override them for carrier-specific functionality.
 
 ### Carriers
 
