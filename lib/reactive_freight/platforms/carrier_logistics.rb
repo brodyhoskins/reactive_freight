@@ -5,6 +5,15 @@ module ReactiveShipping
     # Documents
 
     # Rates
+    def find_rates(origin, destination, packages, options = {})
+      options = @options.merge(options)
+      origin = Location.from(origin)
+      destination = Location.from(destination)
+      packages = Array(packages)
+
+      params = build_rate_params(origin, destination, packages, options)
+      parse_rate_response(origin, destination, packages, commit(:rates, params: params), options)
+    end
 
     # Tracking
 
@@ -13,7 +22,7 @@ module ReactiveShipping
     def build_url(action, options = {})
       scheme = conf.dig(:api, :use_ssl, action) ? 'https://' : 'http://'
       url = "#{scheme}#{conf.dig(:api, :domain)}#{conf.dig(:api, :endpoints, action)}"
-      url = url.sub('@CARRIER_CODE@', conf.dig(:api, :carrier_code))
+      url = url.sub('@CARRIER_CODE@', conf.dig(:api, :carrier_code)) if url.include?('@CARRIER_CODE@')
       url << options[:params] unless options[:params].blank?
       url
     end

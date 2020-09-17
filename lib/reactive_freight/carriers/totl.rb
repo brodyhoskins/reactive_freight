@@ -27,16 +27,7 @@ module ReactiveShipping
     # Documents
 
     # Rates
-
-    def find_rates(origin, destination, packages, options = {})
-      options = @options.merge(options)
-      origin = Location.from(origin)
-      destination = Location.from(destination)
-      packages = Array(packages)
-
-      params = build_rate_params(origin, destination, packages, options)
-      parse_rate_response(origin, destination, packages, commit(:rates, params: params), options)
-    end
+    def build_calculated_accessorials(packages); end
 
     # Tracking
 
