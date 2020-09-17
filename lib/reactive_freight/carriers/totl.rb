@@ -28,15 +28,6 @@ module ReactiveShipping
 
     # Rates
 
-    def build_calculated_accessorials(packages)
-      longest_dimension = packages.inject([]) { |_arr, p| [p.inches[0], p.inches[1]] }.max.ceil
-      if longest_dimension > 144
-        accessorials << '&OL=yes'
-      elsif longest_dimension >= 96 && longest_dimension <= 144
-        accessorials << '&OL1=yes'
-      end
-    end
-
     def find_rates(origin, destination, packages, options = {})
       options = @options.merge(options)
       origin = Location.from(origin)
