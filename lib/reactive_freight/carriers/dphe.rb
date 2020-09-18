@@ -7,10 +7,6 @@ module ReactiveShipping
     cattr_reader :name
     @@name = 'Dependable Highway Express'
 
-    def maximum_weight
-      Measured::Weight.new(10_000, :pounds)
-    end
-
     # Documents
 
     # Rates
@@ -21,7 +17,7 @@ module ReactiveShipping
       packages = Array(packages)
 
       request = build_rate_request(origin, destination, packages, options)
-      parse_rate_response(origin, destination, packages, commit_soap(:rates, request), options)
+      parse_rate_response(origin, destination, commit_soap(:rates, request))
     end
 
     # Tracking
@@ -66,7 +62,7 @@ module ReactiveShipping
 
       accessorials = []
       unless options[:accessorials].blank?
-        serviceable_accessorials?(options[:accessorials]) # raises InvalidArgumentError if options[:accessorials] invalid
+        serviceable_accessorials?(options[:accessorials])
         options[:accessorials].each do |a|
           unless @conf.dig(:accessorials, :unserviceable).include?(a)
             accessorials << @conf.dig(:accessorials, :mappable)[a]
@@ -103,7 +99,7 @@ module ReactiveShipping
       }
     end
 
-    def parse_rate_response(origin, destination, _packages, response, options = {})
+    def parse_rate_response(origin, destination, response)
       success = true
       message = ''
 
@@ -111,8 +107,11 @@ module ReactiveShipping
         success = false
         message = 'API Error: Unknown response'
       else
-        # :rate_error itself is unreliable indicator of error as it returns false when there is an error
-        if !response.dig(:get_rates_response, :get_rates_result, :rate_error).blank? || response.dig(:get_rates_response, :get_rates_result, :rate_quote_number).blank?
+        error = response.dig(:get_rates_response, :get_rates_result, :rate_error)
+        quote_number = response.dig(:get_rates_response, :get_rates_result, :rate_quote_number).blank?
+
+        # error on its own isn't reliable indicator of error - returns false on error
+        if !error.blank? || quote_number
           success = false
           message = response.dig(:get_rates_response, :get_rates_result, :return_line)
         else
@@ -160,8 +159,6 @@ module ReactiveShipping
 
     def parse_city_state(str)
       return nil if str.blank?
-
-      puts "parse_city(\"#{str}\")"
 
       Location.new(
         city: str.split(', ')[0].titleize,
@@ -244,8 +241,6 @@ module ReactiveShipping
           end
         end
         next if event_key.blank?
-
-        puts event_key
 
         case event_key
         when :arrived_at_terminal

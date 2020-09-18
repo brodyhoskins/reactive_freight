@@ -22,7 +22,7 @@ module ReactiveShipping
     # Uses ActiveShipping styled events
     # EVENTS = {}.freeze
 
-    API_PREFIX = '/api/v1'.freeze
+    API_PREFIX = '/api/v1'
 
     API_ENDPOINTS = {
       authenticate: '/authenticate',
@@ -58,7 +58,7 @@ module ReactiveShipping
 
     def show(id)
       request = build_request(:show, params: "/#{id}")
-      response = commit(request)
+      commit(request)
     end
 
     # Tracking
@@ -92,7 +92,7 @@ module ReactiveShipping
       }
     end
 
-    def commit(request, _options = {})
+    def commit(request)
       url = request[:url]
       headers = request[:headers]
       method = request[:method]

@@ -11,23 +11,22 @@ module ReactiveShipping
       @options = options
       @last_request = nil
       @test_mode = @options[:test]
-      if self.class::REACTIVE_FREIGHT_CARRIER
-        conf_path = File.join(__dir__, 'configuration', 'carriers', "#{self.class.to_s.split('::')[1].downcase}.yml")
-        @conf = YAML.safe_load(File.read(conf_path), permitted_classes: [Symbol])
-      end
+
+      return unless self.class::REACTIVE_FREIGHT_CARRIER
+
+      conf_path = File.join(__dir__, 'configuration', 'carriers', "#{self.class.to_s.split('::')[1].downcase}.yml")
+      @conf = YAML.safe_load(File.read(conf_path), permitted_classes: [Symbol])
     end
 
-    def available_services(origin_country_code, destination_country_code, _options = {})
-      country = ActiveUtils::Country.find('USA')
-      if ActiveUtils::Country.find(origin_country_code) == country && ActiveUtils::Country.find(destination_country_code) == country
-        return [:standard_ltl]
-      end
-
-      nil
+    def maximum_weight
+      Measured::Weight.new(10_000, :pounds)
     end
 
     def serviceable_accessorials?(accessorials)
-      if !self.class::REACTIVE_FREIGHT_CARRIER || !@conf.dig(:accessorials, :mappable) || !@conf.dig(:accessorials, :unquotable) || !@conf.dig(:accessorials, :unserviceable)
+      if !self.class::REACTIVE_FREIGHT_CARRIER ||
+         !@conf.dig(:accessorials, :mappable) ||
+         !@conf.dig(:accessorials, :unquotable) ||
+         !@conf.dig(:accessorials, :unserviceable)
         raise NotImplementedError, "#{self.class.name}: #serviceable_accessorials? not supported"
       end
 
@@ -44,15 +43,15 @@ module ReactiveShipping
       true
     end
 
-    def find_bol(_tracking_number, _options = {})
+    def find_bol(*)
       raise NotImplementedError, "#{self.class.name}: #find_bol not supported"
     end
 
-    def find_estimate(_estimate_reference, _options = {})
+    def find_estimate(*)
       raise NotImplementedError, "#{self.class.name}: #find_estimate not supported"
     end
 
-    def find_pod(_tracking_number, _options = {})
+    def find_pod(*)
       raise NotImplementedError, "#{self.class.name}: #find_pod not supported"
     end
   end

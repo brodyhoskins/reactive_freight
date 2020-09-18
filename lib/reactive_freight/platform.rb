@@ -19,15 +19,15 @@ module ReactiveShipping
       @conf = @conf.deep_merge(YAML.safe_load(File.read(conf_path), permitted_classes: [Symbol]))
     end
 
-    def find_bol(_tracking_number, _options = {})
+    def find_bol(*)
       raise NotImplementedError, "#{self.class.name}: #find_bol not supported"
     end
 
-    def find_estimate(_estimate_reference, _options = {})
+    def find_estimate(*)
       raise NotImplementedError, "#{self.class.name}: #find_estimate not supported"
     end
 
-    def find_pod(_tracking_number, _options = {})
+    def find_pod(*)
       raise NotImplementedError, "#{self.class.name}: #find_pod not supported"
     end
   end

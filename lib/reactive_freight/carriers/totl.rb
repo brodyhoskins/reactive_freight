@@ -9,10 +9,6 @@ module ReactiveShipping
 
     @platform = ReactiveShipping::CarrierLogistics
 
-    def maximum_weight
-      Measured::Weight.new(10_000, :pounds)
-    end
-
     def requirements
       %i[username password account]
     end
@@ -30,8 +26,7 @@ module ReactiveShipping
 
     # Rates
 
-    def parse_rate_response(origin, destination, _packages, response, options = {})
-      options = @options.merge(options)
+    def parse_rate_response(origin, destination, response)
       success = true
       message = ''
 
@@ -50,16 +45,23 @@ module ReactiveShipping
           if cost
             # Carrier-specific pricing structure
             oversized_pallets_price = 0
-            _packages.each do |package|
+            packages.each do |package|
               short_side, long_side = nil
               if !package.inches[0].blank? && !package.inches[1].blank? && !package.inches[2].blank?
                 long_side = package.inches[0] > package.inches[1] ? package.inches[0] : package.inches[1]
                 short_side = package.inches[0] < package.inches[1] ? package.inches[0] : package.inches[1]
               end
 
-              if short_side && long_side && package.inches[2] && ((short_side > 40) || (long_side > 48) || (package.inches[2] > 84))
-                oversized_pallets_price += 1500
-              end
+              next unless short_side &&
+                          long_side &&
+                          package.inches[2] &&
+                          (
+                            short_side > 40 ||
+                            long_side > 48 ||
+                            package.inches[2] > 84
+                          )
+
+              oversized_pallets_price += 1500
             end
             cost += oversized_pallets_price
 

@@ -7,14 +7,13 @@ module ReactiveShipping
     # Documents
 
     # Rates
-    def find_rates(origin, destination, packages, options = {})
-      options = @options.merge(options)
+    def find_rates(origin, destination, packages, *)
       origin = Location.from(origin)
       destination = Location.from(destination)
       packages = Array(packages)
 
-      params = build_rate_params(origin, destination, packages, options)
-      parse_rate_response(origin, destination, packages, commit(:rates, params: params), options)
+      params = build_rate_params(origin, destination, packages)
+      parse_rate_response(origin, destination, commit(:rates, params: params))
     end
 
     # Tracking
@@ -25,6 +24,7 @@ module ReactiveShipping
     # protected
 
     def build_url(action, options = {})
+      options = @options.merge(options)
       scheme = @conf.dig(:api, :use_ssl, action) ? 'https://' : 'http://'
       url = ''.dup
       url << "#{scheme}#{@conf.dig(:api, :domain)}#{@conf.dig(:api, :endpoints, action)}"
@@ -33,9 +33,9 @@ module ReactiveShipping
       url
     end
 
-    def commit(action, _options = {})
-      url = build_url(action, params: _options[:params])
-      puts "url: #{url}"
+    def commit(action, options = {})
+      options = @options.merge(options)
+      url = build_url(action, params: options[:params])
       HTTParty.get(url)
     end
 
@@ -64,7 +64,6 @@ module ReactiveShipping
     end
 
     def parse_date(date)
-      puts "parse_date(\"#{date}\")"
       date ? DateTime.strptime(date, '%m/%d/%Y %I:%M %p').to_s(:db) : nil
     end
 
@@ -76,7 +75,7 @@ module ReactiveShipping
         if !response.code == 200
           raise ReactiveShipping::ResponseError, "API Error: #{self.class.name}: HTTP #{response.code}"
         end
-      rescue StandardError => e
+      rescue StandardError
         raise ReactiveShipping::ResponseError, "API Error: #{self.class.name}: Unknown response:\n#{response.inspect}"
       end
 
@@ -155,7 +154,7 @@ module ReactiveShipping
     end
 
     # Rates
-    def build_rate_params(origin, destination, packages, _options = {})
+    def build_rate_params(origin, destination, packages)
       params = ''.dup
       params << "xmlv=yes&xmluser=#{@options[:username]}"
       params << "&xmlpass=#{@options[:password]}"
@@ -172,9 +171,9 @@ module ReactiveShipping
       end
 
       accessorials = []
-      unless _options[:accessorials].blank?
-        serviceable_accessorials?(_options[:accessorials]) # raises InvalidArgumentError if _options[:accessorials] invalid
-        _options[:accessorials].each do |a|
+      unless options[:accessorials].blank?
+        serviceable_accessorials?(options[:accessorials])
+        options[:accessorials].each do |a|
           unless @conf.dig(:accessorials, :unserviceable).include?(a)
             accessorials << @conf.dig(:accessorials, :mappable)[a]
           end
@@ -186,7 +185,7 @@ module ReactiveShipping
       params
     end
 
-    def parse_rate_response(origin, destination, _packages, response, _options = {})
+    def parse_rate_response(origin, destination, response)
       success = true
       message = ''
 

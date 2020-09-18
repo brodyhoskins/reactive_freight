@@ -7,10 +7,6 @@ module ReactiveShipping
     cattr_reader :name
     @@name = 'Best Overnite Express'
 
-    def maximum_weight
-      Measured::Weight.new(10_000, :pounds)
-    end
-
     def requirements
       %i[username password]
     end
@@ -34,14 +30,14 @@ module ReactiveShipping
       packages = Array(packages)
 
       request = build_rate_request(origin, destination, packages, options)
-      parse_rate_response(origin, destination, packages, commit(:rates, request), options)
+      parse_rate_response(origin, destination, packages, commit(:rates, request))
     end
 
     # Tracking
     def find_tracking_info(tracking_number, options = {})
       options = @options.merge(options)
-      request = build_tracking_request(tracking_number, options)
-      parse_tracking_response(commit(:track, request), options)
+      request = build_tracking_request(tracking_number)
+      parse_tracking_response(commit(:track, request))
     end
 
     protected
@@ -96,14 +92,13 @@ module ReactiveShipping
       path = options[:path].blank? ? File.join(Dir.tmpdir, "#{@@name} #{tracking_number} #{type.to_s.upcase}.pdf") : options[:path]
       file = File.new(path, 'w')
 
-      open(file.path, 'wb') do |file|
+      File.open(file.path, 'wb') do |file|
         begin
-          open(url) do |input|
+          URI.parse(url).open do |input|
             file.write(input.read)
           end
-        rescue OpenURI::HTTPError => e
+        rescue OpenURI::HTTPError
           raise ReactiveShipping::ResponseError, "API Error: #{@@name}: Document not found"
-          return nil
         end
       end
 
@@ -155,7 +150,7 @@ module ReactiveShipping
       accessorials = []
 
       unless options[:accessorials].blank?
-        serviceable_accessorials?(options[:accessorials]) # raises InvalidArgumentError if options[:accessorials] invalid
+        serviceable_accessorials?(options[:accessorials])
         options[:accessorials].each do |a|
           unless @conf.dig(:accessorials, :unserviceable).include?(a)
             accessorials << { code: @conf.dig(:accessorials, :mappable)[a] }
@@ -199,8 +194,7 @@ module ReactiveShipping
       }
     end
 
-    def parse_rate_response(origin, destination, packages, response, options = {})
-      options = @options.merge(options)
+    def parse_rate_response(origin, destination, packages, response)
       success = true
       message = ''
 
@@ -281,9 +275,7 @@ module ReactiveShipping
     end
 
     # Tracking
-    def build_tracking_request(tracking_number, options = {})
-      options = @options.merge(options)
-
+    def build_tracking_request(tracking_number)
       {
         'ns:args0' => {
           securityinfo: build_soap_header,
@@ -311,9 +303,7 @@ module ReactiveShipping
       end
     end
 
-    def parse_tracking_response(response, options = {})
-      options = @options.merge(options)
-
+    def parse_tracking_response(response)
       unless response.dig(:tracktrace_response, :return, :currentstatus, :errorcode).blank?
         status = response.dig(:tracktrace_response, :return, :currentstatus, :errorcode)
         return TrackingResponse.new(false, status, response, carrier: @@name, xml: response, response: response)
@@ -337,7 +327,7 @@ module ReactiveShipping
       unless actual_delivery_date.blank?
         comment = response.dig(:tracktrace_response, :return, :currentstatus, :status).downcase
         if comment.starts_with?('delivered')
-          actual_delivery_date = parse_datetime(comment.downcase.split('signed')[0].split('on')[1].strip.sub('at ', ''))
+          actual_delivery_date = parse_date(comment.downcase.split('signed')[0].split('on')[1].strip.sub('at ', ''))
         end
       end
 
@@ -345,7 +335,6 @@ module ReactiveShipping
       scheduled_delivery_date = parse_date(response.dig(:tracktrace_response, :return, :currentstatus, :estdeliverydate))
       tracking_number = response.dig(:tracktrace_response, :return, :pronumber)
 
-      last_location = nil
       shipment_events = []
       response.dig(:tracktrace_response, :return, :history).each do |api_event|
         event = nil

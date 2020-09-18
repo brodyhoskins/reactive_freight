@@ -5,11 +5,24 @@ Gem::Specification.new do |spec|
   spec.license = 'MIT'
   spec.version = '0.0.1pre'
   spec.date = '2020-08-08'
-  spec.authors = ['Brody Hoskins', 'Sub Pop Records', 'Shopify']
-  spec.email = ['brody@brody.digital', 'webmaster@subpop.com', 'integrations-team@shopify.com']
+
+  spec.authors = [
+    'Brody Hoskins',
+    'Sub Pop Records',
+    'Shopify'
+  ]
+  spec.email = [
+    'brody@brody.digital',
+    'webmaster@subpop.com',
+    'integrations-team@shopify.com'
+  ]
 
   spec.summary = 'Extend ReactiveShipping to support LTL carriers'
-  spec.description = 'ReactiveFreight extends ReactiveShipping to support LTL carriers. Added features include abstracted accessorials and tracking events as well as downloading scanned documents from carriers.'
+  spec.description = <<~DESC.gsub(/\n/, ' ').strip
+    ReactiveFreight extends ReactiveShipping to support LTL carriers. Added
+    features include abstracted accessorials and tracking events as well as
+    downloading scanned documents from carriers.
+  DESC
   spec.homepage = 'https://github.com/brodyhoskins/reactive_freight'
 
   spec.files = Dir['lib/*.rb']

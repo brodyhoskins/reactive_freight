@@ -7,10 +7,6 @@ module ReactiveShipping
     cattr_reader :name
     @@name = 'Roadrunner Transportation Services'
 
-    def maximum_weight
-      Measured::Weight.new(10_000, :pounds)
-    end
-
     def requirements
       %i[username password account]
     end
@@ -34,7 +30,7 @@ module ReactiveShipping
       packages = Array(packages)
 
       request = build_rate_request(origin, destination, packages, options)
-      parse_rate_response(origin, destination, packages, commit_soap(:rates, request), options)
+      parse_rate_response(origin, destination, commit_soap(:rates, request))
     end
 
     # Tracking
@@ -83,17 +79,20 @@ module ReactiveShipping
 
     # Documents
     def parse_document_response(type, tracking_number, options = {})
-      uri = request_url(type).sub('%%TRACKING_NUMBER%%', tracking_number.to_s)
+      url = request_url(type).sub('%%TRACKING_NUMBER%%', tracking_number.to_s)
 
       begin
-        doc = Nokogiri::HTML(open(uri))
-      rescue OpenURI::HTTPError => e
+        doc = Nokogiri::HTML(URI.parse(url).open)
+      rescue OpenURI::HTTPError
         raise ReactiveShipping::ResponseError, "API Error: #{@@name}: Document not found"
-        return nil
       end
 
       data = Base64.decode64(doc.css('img').first['src'].split('data:image/jpg;base64,').last)
-      path = options[:path].blank? ? File.join(Dir.tmpdir, "#{@@name} #{tracking_number} #{type.to_s.upcase}.pdf") : options[:path]
+      path = if options[:path].blank?
+               File.join(Dir.tmpdir, "#{@@name} #{tracking_number} #{type.to_s.upcase}.pdf")
+             else
+               options[:path]
+             end
 
       file = Tempfile.new
       file.write(data)
@@ -111,7 +110,7 @@ module ReactiveShipping
       ]
 
       unless options[:accessorials].blank?
-        serviceable_accessorials?(options[:accessorials]) # raises InvalidArgumentError if options[:accessorials] invalid
+        serviceable_accessorials?(options[:accessorials])
         options[:accessorials].each do |a|
           unless @conf.dig(:accessorials, :unserviceable).include?(a)
             service_deliveryoptions << { serviceoptions: { service_code: @conf.dig(:accessorials, :mappable)[a] } }
@@ -151,7 +150,7 @@ module ReactiveShipping
       }
     end
 
-    def parse_rate_response(origin, destination, _packages, response, options = {})
+    def parse_rate_response(origin, destination, response)
       success = true
       message = ''
 
@@ -210,7 +209,7 @@ module ReactiveShipping
 
     # Tracking
     def build_tracking_request(tracking_number)
-      open("#{request_url(:track)}/#{tracking_number}")
+      URI.parse("#{request_url(:track)}/#{tracking_number}").open
     end
 
     def parse_location(comment, delimiters)

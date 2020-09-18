@@ -9,20 +9,6 @@ module ReactiveShipping
 
     @platform = ReactiveShipping::CarrierLogistics
 
-    def available_services(origin_country_code, destination_country_code, options = {})
-      options = @options.merge(options)
-      country = ActiveUtils::Country.find('USA')
-      if ActiveUtils::Country.find(origin_country_code) == country && ActiveUtils::Country.find(destination_country_code) == country
-        return :standard
-      end
-
-      nil
-    end
-
-    def maximum_weight
-      Measured::Weight.new(10_000, :pounds)
-    end
-
     # Documents
 
     # Rates

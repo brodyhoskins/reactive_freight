@@ -11,10 +11,6 @@ module ReactiveShipping
       nil
     end
 
-    def maximum_weight
-      Measured::Weight.new(10_000, :pounds)
-    end
-
     def requirements
       %i[username password]
     end
@@ -34,8 +30,7 @@ module ReactiveShipping
 
     protected
 
-    def build_url(action, options = {})
-      options = @options.merge(options)
+    def build_url(action, *)
       "#{@conf.dig(:api, :domain)}#{@conf.dig(:api, :endpoints, action)}"
     end
 
@@ -58,17 +53,20 @@ module ReactiveShipping
     # Documents
     def parse_document_response(type, tracking_number, url, options = {})
       options = @options.merge(options)
-      path = options[:path].blank? ? File.join(Dir.tmpdir, "#{@@name} #{tracking_number} #{type.to_s.upcase}.pdf") : options[:path]
+      path = if options[:path].blank?
+               File.join(Dir.tmpdir, "#{@@name} #{tracking_number} #{type.to_s.upcase}.pdf")
+             else
+               options[:path]
+             end
       file = Tempfile.new
 
-      open(file.path, 'wb') do |file|
+      File.open(file.path, 'wb') do |file|
         begin
-          open(url) do |input|
+          URI.parse(url).open do |input|
             file.write(input.read)
           end
-        rescue OpenURI::HTTPError => e
+        rescue OpenURI::HTTPError
           raise ReactiveShipping::ResponseError, "API Error: #{@@name}: Document not found"
-          return nil
         end
       end
 
@@ -141,10 +139,21 @@ module ReactiveShipping
       html = browser.table(id: 'cphMain_grvLogNotes').inner_html
       html = Nokogiri::HTML(html)
 
-      shipper_address = parse_city_state_zip(browser.element(xpath: '/html/body/form/div[3]/table[2]/tbody/tr[14]/td[1]/span').text)
-      receiver_address = parse_city_state_zip(browser.element(xpath: '/html/body/form/div[3]/table[2]/tbody/tr[14]/td[2]/span').text)
+      shipper_address = parse_city_state_zip(
+        browser.element(
+          xpath: '/html/body/form/div[3]/table[2]/tbody/tr[14]/td[1]/span'
+        ).text
+      )
 
-      ship_time = browser.element(xpath: '/html/body/form/div[3]/table[2]/tbody/tr[7]/td[2]/span').text
+      receiver_address = parse_city_state_zip(
+        browser.element(
+          xpath: '/html/body/form/div[3]/table[2]/tbody/tr[14]/td[2]/span'
+        ).text
+      )
+
+      ship_time = browser.element(
+        xpath: '/html/body/form/div[3]/table[2]/tbody/tr[7]/td[2]/span'
+      ).text
       ship_time = ship_time ? Date.strptime(ship_time, '%m/%d/%Y').to_s(:db) : nil
 
       shipment_events = []
@@ -161,7 +170,6 @@ module ReactiveShipping
             break
           end
         end
-
         next if event_key.blank?
 
         location = event.downcase.split(@conf.dig(:events, :types, event_key)).last
