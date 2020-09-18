@@ -154,7 +154,8 @@ module ReactiveShipping
     end
 
     # Rates
-    def build_rate_params(origin, destination, packages)
+    def build_rate_params(origin, destination, packages, options = {})
+      options = @options.merge(options)
       params = ''.dup
       params << "xmlv=yes&xmluser=#{@options[:username]}"
       params << "&xmlpass=#{@options[:password]}"
