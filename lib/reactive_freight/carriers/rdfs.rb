@@ -104,27 +104,27 @@ module ReactiveShipping
     def build_rate_request(origin, destination, packages, options = {})
       options = @options.merge(options)
 
-      service_delivery_options = [
-        service_options: { service_code: 'SS' }
+      service_deliveryoptions = [
+        serviceoptions: { service_code: 'SS' }
       ]
 
       unless options[:accessorials].blank?
         serviceable_accessorials?(options[:accessorials]) # raises InvalidArgumentError if options[:accessorials] invalid
         options[:accessorials].each do |a|
           unless @conf.dig(:accessorials, :unserviceable).include?(a)
-            service_delivery_options << { service_options: { service_code: @conf.dig(:accessorials, :mappable)[a] } }
+            service_deliveryoptions << { serviceoptions: { service_code: @conf.dig(:accessorials, :mappable)[a] } }
           end
         end
       end
 
       longest_dimension = packages.inject([]) { |_arr, p| [p.inches[0], p.inches[1]] }.max.ceil
       if longest_dimension > 144
-        service_delivery_options << { service_options: { service_code: 'EXL' } }
+        service_deliveryoptions << { serviceoptions: { service_code: 'EXL' } }
       elsif longest_dimension > 96
-        service_delivery_options << { service_options: { service_code: 'EXM' } }
+        service_deliveryoptions << { serviceoptions: { service_code: 'EXM' } }
       end
 
-      service_delivery_options = service_delivery_options.uniq.to_a
+      service_deliveryoptions = service_deliveryoptions.uniq.to_a
 
       {
         'request' => {
@@ -138,7 +138,7 @@ module ReactiveShipping
               }
             end
           },
-          service_delivery_options: service_delivery_options,
+          service_deliveryoptions: service_deliveryoptions,
           origin_type: options[:origin_type] || 'B', # O for shipper, I for consignee, B for third party
           payment_type: options[:payment_type] || 'P', # Prepaid
           pallet_count: packages.size,
@@ -149,7 +149,7 @@ module ReactiveShipping
       }
     end
 
-    def parse_rate_response(origin, destination, _packages, response, _options = {})
+    def parse_rate_response(origin, destination, _packages, response, options = {})
       success = true
       message = ''
 

@@ -15,10 +15,12 @@ module ReactiveShipping
 
     # Documents
     def find_bol(tracking_number, options = {})
+      options = @options.merge(options)
       parse_document_response(:bol, tracking_number, options)
     end
 
     def find_pod(tracking_number, options = {})
+      options = @options.merge(options)
       parse_document_response(:pod, tracking_number, options)
     end
 
@@ -35,6 +37,7 @@ module ReactiveShipping
 
     # Tracking
     def find_tracking_info(tracking_number, options = {})
+      options = @options.merge(options)
       request = build_tracking_request(tracking_number, options)
       parse_tracking_response(commit(:track, request), options)
     end
@@ -87,6 +90,7 @@ module ReactiveShipping
 
     # Documents
     def download_document(type, tracking_number, url, options = {})
+      options = @options.merge(options)
       path = options[:path].blank? ? File.join(Dir.tmpdir, "#{@@name} #{tracking_number} #{type.to_s.upcase}.pdf") : options[:path]
       file = File.new(path, 'w')
 
@@ -105,6 +109,7 @@ module ReactiveShipping
     end
 
     def parse_document_response(type, tracking_number, options = {})
+      options = @options.merge(options)
       browser = Watir::Browser.new(:chrome, headless: !@debug)
       browser.goto(build_url(:pod))
 
@@ -192,7 +197,8 @@ module ReactiveShipping
       }
     end
 
-    def parse_rate_response(origin, destination, packages, response, _options = {})
+    def parse_rate_response(origin, destination, packages, response, options = {})
+      options = @options.merge(options)
       success = true
       message = ''
 

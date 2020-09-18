@@ -28,7 +28,8 @@ module ReactiveShipping
 
     # Rates
 
-    def parse_rate_response(origin, destination, _packages, response, _options = {})
+    def parse_rate_response(origin, destination, _packages, response, options = {})
+      options = @options.merge(options)
       success = true
       message = ''
 

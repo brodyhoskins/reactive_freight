@@ -19,6 +19,7 @@ module ReactiveShipping
 
     # Documents
     def find_pod(tracking_number, options = {})
+      options = @options.merge(options)
       parse_pod_response(tracking_number, options)
     end
 
@@ -31,15 +32,17 @@ module ReactiveShipping
 
     protected
 
-    def build_url(action, _options = {})
+    def build_url(action, options = {})
+      options = @options.merge(options)
       "#{@conf.dig(:api, :domain)}#{@conf.dig(:api, :endpoints, action)}"
     end
 
-    def commit(action, _options = {})
+    def commit(action, options = {})
+      options = @options.merge(options)
       url = request_url(action)
 
       if @conf.dig(:api, :methods, action) == :post
-        _options[:params].blank? ? HTTParty.post(url) : HTTParty.post(url, query: _options[:params])
+        options[:params].blank? ? HTTParty.post(url) : HTTParty.post(url, query: options[:params])
       else
         HTTParty.get(url)
       end
@@ -52,6 +55,7 @@ module ReactiveShipping
 
     # Documents
     def parse_document_response(type, tracking_number, url, options = {})
+      options = @options.merge(options)
       path = options[:path].blank? ? File.join(Dir.tmpdir, "#{@@name} #{tracking_number} #{type.to_s.upcase}.pdf") : options[:path]
       file = Tempfile.new
 
@@ -72,6 +76,7 @@ module ReactiveShipping
     end
 
     def parse_pod_response(tracking_number, options = {})
+      options = @options.merge(options)
       browser = Watir::Browser.new(:chrome, headless: !@debug)
       browser.goto(build_url(:pod))
 

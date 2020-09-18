@@ -9,10 +9,6 @@ module ReactiveShipping
       Measured::Weight.new(10_000, :pounds)
     end
 
-    def requirements
-      %i[account]
-    end
-
     # Documents
 
     # Rates
@@ -105,7 +101,7 @@ module ReactiveShipping
       }
     end
 
-    def parse_rate_response(origin, destination, _packages, response, _options = {})
+    def parse_rate_response(origin, destination, _packages, response, options = {})
       success = true
       message = ''
 
