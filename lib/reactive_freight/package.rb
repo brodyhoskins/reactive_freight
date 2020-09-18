@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module ReactiveShipping
   class Package
     VALID_FREIGHT_CLASSES = [55, 60, 65, 70, 77.5, 85, 92.5, 100, 110, 125, 150, 175, 200, 250, 300, 400].freeze

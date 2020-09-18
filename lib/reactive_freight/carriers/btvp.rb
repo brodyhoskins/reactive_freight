@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module ReactiveShipping
   class BTVP < ReactiveShipping::Carrier
     REACTIVE_FREIGHT_CARRIER = true

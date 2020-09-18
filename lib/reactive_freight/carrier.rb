@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module ReactiveShipping
   class Carrier
     attr_accessor :conf

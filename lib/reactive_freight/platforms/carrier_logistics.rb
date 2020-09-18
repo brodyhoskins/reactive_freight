@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module ReactiveShipping
   class CarrierLogistics < ReactiveShipping::Platform
     ACTIVE_FREIGHT_CARRIER = true
@@ -24,7 +26,8 @@ module ReactiveShipping
 
     def build_url(action, options = {})
       scheme = @conf.dig(:api, :use_ssl, action) ? 'https://' : 'http://'
-      url = "#{scheme}#{@conf.dig(:api, :domain)}#{@conf.dig(:api, :endpoints, action)}"
+      url = ''.dup
+      url << "#{scheme}#{@conf.dig(:api, :domain)}#{@conf.dig(:api, :endpoints, action)}"
       url = url.sub('@CARRIER_CODE@', @conf.dig(:api, :carrier_code)) if url.include?('@CARRIER_CODE@')
       url << options[:params] unless options[:params].blank?
       url
@@ -153,7 +156,7 @@ module ReactiveShipping
 
     # Rates
     def build_rate_params(origin, destination, packages, _options = {})
-      params = ''
+      params = ''.dup
       params << "xmlv=yes&xmluser=#{@options[:username]}"
       params << "&xmlpass=#{@options[:password]}"
       params << "&vozip=#{origin.to_hash[:postal_code]}"

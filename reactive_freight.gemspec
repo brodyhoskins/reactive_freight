@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 Gem::Specification.new do |spec|
   spec.name = 'reactive_freight'
   spec.license = 'MIT'

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module ReactiveShipping
   class DPHE < ReactiveShipping::Carrier
     REACTIVE_FREIGHT_CARRIER = true

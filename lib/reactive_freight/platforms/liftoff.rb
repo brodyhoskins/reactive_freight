@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module ReactiveShipping
   class Liftoff < ReactiveShipping::Carrier
     ACTIVE_FREIGHT_CARRIER = true
