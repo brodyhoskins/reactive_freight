@@ -101,20 +101,21 @@
 :api:
   :actions:
     :rates: :get_rates
+    :track: :get_tracking
   :domain: www.godependable.com
   :endpoints:
     :rates: /services/rates.asmx?WSDL
+    :track: /services/track.asmx?WSDL
   :use_ssl:
     :rates: false
 :events:
   :types:
-    :arrived_at_terminal: ARV
-    :delivered: DEL
-    :departed: DSP
-    :out_for_delivery: OFD
-    :picked_up: PU
-    :trailer_closed: CLO
-    :trailer_unloaded: UNL
+    :arrived_at_terminal: linehaul arrived
+    :delivered: completed.  signed by # "delivery" used often to mean arrived at terminal
+    :departed: linehaul departed
+    :out_for_delivery: out for delivery
+    :trailer_closed: terminal load
+    :trailer_unloaded: terminal unload
 :services:
   :types:
     - :standard_ltl

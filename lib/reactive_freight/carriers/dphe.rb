@@ -27,6 +27,10 @@ module ReactiveShipping
     end
 
     # Tracking
+    def find_tracking_info(tracking_number)
+      request = build_tracking_request(tracking_number)
+      parse_tracking_response(commit_soap(:track, request))
+    end
 
     protected
 
@@ -152,5 +156,141 @@ module ReactiveShipping
     end
 
     # Tracking
+    def build_tracking_request(tracking_number)
+      { pro_number: tracking_number }
+    end
+
+    def parse_city_state(str)
+      return nil if str.blank?
+
+      puts "parse_city(\"#{str}\")"
+
+      Location.new(
+        city: str.split(', ')[0].titleize,
+        state: str.split(', ')[1].split(' ')[0].upcase,
+        country: ActiveUtils::Country.find('USA')
+      )
+    end
+
+    def parse_city(str)
+      return nil if str.blank?
+
+      Location.new(
+        city: str.squeeze.strip.titleize,
+        state: nil,
+        country: ActiveUtils::Country.find('USA')
+      )
+    end
+
+    def parse_date(date)
+      date ? DateTime.strptime(date, '%m/%d/%Y %l:%M:%S %p').to_s(:db) : nil
+    end
+
+    def parse_location(comment, delimiters)
+      city = comment.split(delimiters[0])[0].split(delimiters[1])[1].split(', ')[0].titleize
+      state = comment.split(delimiters[0])[0].split(delimiters[1])[1].split(', ')[1].upcase
+
+      Location.new(
+        city: city,
+        province: state,
+        state: state,
+        country: ActiveUtils::Country.find('USA')
+      )
+    end
+
+    def parse_tracking_response(response)
+      unless response.dig(:get_tracking_response, :get_tracking_result, :tracking_status_response)
+        status = json.dig('error') || "API Error: HTTP #{response.status[0]}"
+        return TrackingResponse.new(false, status, json, carrier: @@name, json: json, response: response)
+      end
+
+      search_result = response.dig(:get_tracking_response, :get_tracking_result)
+
+      shipper_address = Location.new(
+        street: search_result.dig(:shipperaddress).squeeze.strip.titleize,
+        city: search_result.dig(:shipper_city).squeeze.strip.titleize,
+        state: search_result.dig(:shipper_state).strip.upcase,
+        postal_code: search_result.dig(:shipper_zip).strip,
+        country: ActiveUtils::Country.find('USA')
+      )
+
+      receiver_address = Location.new(
+        street: search_result.dig(:consaddress).squeeze.strip.titleize,
+        city: search_result.dig(:cons_city).squeeze.strip.titleize,
+        state: search_result.dig(:cons_state).strip.upcase,
+        postal_code: search_result.dig(:cons_zip).strip,
+        country: ActiveUtils::Country.find('USA')
+      )
+
+      actual_delivery_date = parse_date(search_result.dig('Shipment', 'DeliveredDateTime'))
+      pickup_date = parse_date(search_result.dig(:pickup_date))
+      scheduled_delivery_date = parse_date(search_result.dig('Shipment', 'ApptDateTime'))
+      tracking_number = search_result.dig('Shipment', 'SearchItem')
+
+      shipment_events = []
+      shipment_events << ShipmentEvent.new(
+        :picked_up,
+        pickup_date,
+        shipper_address
+      )
+
+      api_events = search_result.dig(:tracking_status_response, :tracking_status_row).reverse
+      api_events.each do |api_event|
+        event_key = nil
+        comment = api_event.dig(:tracking_status)
+
+        @conf.dig(:events, :types).each do |key, val|
+          if comment.downcase.include?(val)
+            event_key = key
+            break
+          end
+        end
+        next if event_key.blank?
+
+        puts event_key
+
+        case event_key
+        when :arrived_at_terminal
+          location = parse_city(comment.split('arrived')[1].upcase.split('SERVICE CENTER')[0])
+        when :delivered
+          location = parse_city_state(comment.split('in ')[1].split('completed')[0])
+        when :departed
+          location = parse_city(comment.split('departed')[1].upcase.split('SERVICE CENTER')[0])
+        when :out_for_delivery
+          location = receiver_address
+        when :trailer_closed
+          location = parse_city(comment.split('Location:')[1])
+        when :trailer_unloaded
+          location = parse_city(comment.split('Location:')[1])
+        end
+
+        datetime_without_time_zone = parse_date(api_event.dig(:tracking_date))
+
+        # status and type_code set automatically by ActiveFreight based on event
+        shipment_events << ShipmentEvent.new(event_key, datetime_without_time_zone, location)
+      end
+
+      shipment_events = shipment_events.sort_by(&:time)
+
+      TrackingResponse.new(
+        true,
+        shipment_events.last.status,
+        response,
+        carrier: @@name,
+        hash: response,
+        response: response,
+        status: status,
+        type_code: shipment_events.last.status,
+        ship_time: parse_date(search_result.dig('Shipment', 'ProDateTime')),
+        scheduled_delivery_date: scheduled_delivery_date,
+        actual_delivery_date: actual_delivery_date,
+        delivery_signature: nil,
+        shipment_events: shipment_events,
+        shipper_address: shipper_address,
+        origin: shipper_address,
+        destination: receiver_address,
+        tracking_number: tracking_number
+      )
+    end
   end
 end
