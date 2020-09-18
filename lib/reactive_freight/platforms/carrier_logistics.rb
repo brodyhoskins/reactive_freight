@@ -13,7 +13,7 @@ module ReactiveShipping
       packages = Array(packages)
 
       params = build_rate_params(origin, destination, packages)
-      parse_rate_response(origin, destination, commit(:rates, params: params))
+      parse_rate_response(origin, destination, packages, commit(:rates, params: params))
     end
 
     # Tracking
@@ -186,7 +186,7 @@ module ReactiveShipping
       params
     end
 
-    def parse_rate_response(origin, destination, response)
+    def parse_rate_response(origin, destination, _packages, response)
       success = true
       message = ''
 

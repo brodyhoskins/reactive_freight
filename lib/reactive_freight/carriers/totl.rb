@@ -24,7 +24,7 @@ module ReactiveShipping
 
     # Rates
 
-    def parse_rate_response(origin, destination, response)
+    def parse_rate_response(origin, destination, packages, response)
       success = true
       message = ''
 
