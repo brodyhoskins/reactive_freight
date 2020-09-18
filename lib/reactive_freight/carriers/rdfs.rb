@@ -5,15 +5,6 @@ module ReactiveShipping
     cattr_reader :name
     @@name = 'Roadrunner Transportation Services'
 
-    def available_services(origin_country_code, destination_country_code, _options = {})
-      country = ActiveUtils::Country.find('USA')
-      if ActiveUtils::Country.find(origin_country_code) == country && ActiveUtils::Country.find(destination_country_code) == country
-        return :standard_ltl
-      end
-
-      nil
-    end
-
     def maximum_weight
       Measured::Weight.new(10_000, :pounds)
     end
