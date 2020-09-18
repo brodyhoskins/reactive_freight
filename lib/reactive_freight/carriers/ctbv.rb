@@ -7,8 +7,6 @@ module ReactiveShipping
     cattr_reader :name
     @@name = 'The Custom Companies'
 
-    @platform = ReactiveShipping::CarrierLogistics
-
     # Documents
 
     # Rates

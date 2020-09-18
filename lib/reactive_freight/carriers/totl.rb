@@ -7,8 +7,6 @@ module ReactiveShipping
     cattr_reader :name
     @@name = 'Total Transportation'
 
-    @platform = ReactiveShipping::CarrierLogistics
-
     def requirements
       %i[username password account]
     end
