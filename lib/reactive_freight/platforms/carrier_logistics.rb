@@ -5,6 +5,15 @@ module ReactiveShipping
     ACTIVE_FREIGHT_CARRIER = true
 
     # Documents
+    def find_bol(tracking_number, options = {})
+      options = @options.merge(options)
+      parse_document_response(:bol, tracking_number, options)
+    end
+
+    def find_pod(tracking_number, options = {})
+      options = @options.merge(options)
+      parse_document_response(:pod, tracking_number, options)
+    end
 
     # Rates
     def find_rates(origin, destination, packages, *)
@@ -23,6 +32,12 @@ module ReactiveShipping
 
     # protected
 
+    def debug?
+      return false if @options[:debug].blank?
+
+      @options[:debug]
+    end
+
     def build_url(action, options = {})
       options = @options.merge(options)
       scheme = @conf.dig(:api, :use_ssl, action) ? 'https://' : 'http://'
@@ -40,6 +55,50 @@ module ReactiveShipping
     end
 
     # Documents
+    def parse_document_response(action, tracking_number, options = {})
+      options = @options.merge(options)
+      browser = Watir::Browser.new(:chrome, headless: debug?)
+      browser.goto(build_url(action))
+
+      browser.text_field(name: 'wlogin').set(@options[:username])
+      browser.text_field(name: 'wpword').set(@options[:password])
+      browser.button(name: 'BtnAction1').click
+
+      browser.frameset.frames[1].text_field(xpath: '/html/body/ul/li[5]/div/form/input[5]').set(tracking_number)
+      browser.browser.frameset.frames[1].element(xpath: '/html/body/ul/li[5]/div/form/input[6]').click
+
+      if action == :bol
+        browser.frameset.frames[1].element(xpath: '//*[@id="topnavmaincontentdiv"]/table[2]/tbody/tr/td/fieldset/table[1]/tbody/tr/td[2]/form/input[3]').click
+      else
+        browser.frameset.frames[1].element(xpath: '//*[@id="topnavmaincontentdiv"]/table[2]/tbody/tr/td/fieldset/table[1]/tbody/tr/td[3]/form/input[3]').click
+      end
+
+      url = nil
+      browser.windows.last.use do
+        url = browser.url
+      end
+
+      browser.close
+
+      path = if options[:path].blank?
+               File.join(Dir.tmpdir, "#{self.class.name} #{tracking_number} #{action.to_s.upcase}.pdf")
+             else
+               options[:path]
+             end
+      file = File.new(path, 'w')
+
+      File.open(file.path, 'wb') do |file|
+        begin
+          URI.parse(url).open do |input|
+            file.write(input.read)
+          end
+        rescue OpenURI::HTTPError
+          raise ReactiveShipping::ResponseError, "API Error: #{self.class.name}: Document not found"
+        end
+      end
+
+      File.exist?(path) ? path : false
+    end
 
     # Tracking
     def parse_city_state(str)

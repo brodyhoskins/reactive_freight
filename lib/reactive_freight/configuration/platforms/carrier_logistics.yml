@@ -1,9 +1,13 @@
 :api:
   :domain: tracking.carrierlogistics.com
   :endpoints:
+    :bol: /scripts/@CARRIER_CODE@.pol/web-login.htm?
+    :pod: /scripts/@CARRIER_CODE@.pol/web-login.htm?
     :rates: /scripts/@CARRIER_CODE@.pol/ratequote.xml?
     :track: /scripts/@CARRIER_CODE@.pol/boldetail.htm?
   :use_ssl:
+    :bol: true
+    :pod: true
     :rates: true
     :track: true
 :events:
