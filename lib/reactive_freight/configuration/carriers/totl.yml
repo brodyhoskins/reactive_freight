@@ -12,16 +12,16 @@
     - :amusement_park_delivery
     - :amusement_park_pickup
     - :athletic_facility_delivery
-    - :athletic_facility_delivery: false
-    - :athletic_facility_pickup: false
+    - :athletic_facility_delivery
+    - :athletic_facility_pickup
     - :cemetery_delivery
     - :cemetery_pickup
     - :church_delivery
     - :church_pickup
     - :construction_delivery
     - :construction_pickup
-    - :dock_dropoff: false
-    - :dock_pickup: false
+    - :dock_dropoff
+    - :dock_pickup
     - :farm_delivery
     - :farm_pickup
     - :fitness_center_delivery
@@ -30,17 +30,17 @@
     - :golf_course_pickup
     - :government_delivery
     - :government_pickup
-    - :grocery_store_delivery: false
-    - :grocery_store_pickup: false
-    - :hospital_delivery: false
-    - :hospital_pickup: false
+    - :grocery_store_delivery
+    - :grocery_store_pickup
+    - :hospital_delivery
+    - :hospital_pickup
     - :hotel_delivery
     - :hotel_pickup
     - :inspection_site_delivery
     - :inspection_site_pickup
     - :jobsite_delivery
     - :jobsite_pickup
-    - :mall_delivery: false
+    - :mall_delivery
     - :mall_pickup
     - :marina_delivery
     - :marina_pickup
@@ -48,8 +48,8 @@
     - :military_site_pickup
     - :mine_site_delivery
     - :mine_site_pickup
-    - :motel_delivery: false
-    - :motel_pickup: false
+    - :motel_delivery
+    - :motel_pickup
     - :nursing_home_delivery
     - :nursing_home_pickup
     - :park_delivery
@@ -62,12 +62,12 @@
     - :reservation_pickup
     - :resort_delivery
     - :resort_pickup
-    - :restaurant_delivery: false
-    - :restaurant_pickup: false
+    - :restaurant_delivery
+    - :restaurant_pickup
     - :school_delivery
     - :school_pickup
-    - :steel_mill_delivery: false
-    - :steel_mill_pickup: false
+    - :steel_mill_delivery
+    - :steel_mill_pickup
     - :storage_facility_delivery
     - :storage_facility_pickup
     - :university_delivery
