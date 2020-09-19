@@ -26,6 +26,7 @@ Carriers differ from platforms in that they have unique web services whereas pla
 ### Carriers
 
 * [Best Overnite Express](https://www.bestovernite.com)
+* [Clear Lane Freight Systems](https://clearlanefreight.com)
 * [Dependable Highway Express](https://godependable.com)
 * [The Custom Companies](https://www.customco.com)
 * [Roadrunner Transportation Services](https://www.rrts.com)
