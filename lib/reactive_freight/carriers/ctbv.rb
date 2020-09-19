@@ -10,7 +10,7 @@ module ReactiveShipping
     # Documents
 
     # Rates
-    def build_calculated_accessorials(packages)
+    def build_calculated_accessorials(packages, *)
       longest_dimension = packages.inject([]) { |_arr, p| [p.inches[0], p.inches[1]] }.max.ceil
       if longest_dimension > 144
         accessorials << '&OL=yes'
