@@ -64,18 +64,34 @@ module ReactiveShipping
       browser.text_field(name: 'wpword').set(@options[:password])
       browser.button(name: 'BtnAction1').click
 
-      browser.frameset.frames[1].text_field(xpath: '/html/body/ul/li[5]/div/form/input[5]').set(tracking_number)
-      browser.browser.frameset.frames[1].element(xpath: '/html/body/ul/li[5]/div/form/input[6]').click
+      browser.frameset.frames[1].text_field(id: 'menuquicktrack').set(tracking_number)
+      browser.browser.frameset.frames[1].button(id: 'menusubmit').click
 
       if action == :bol
-        browser.frameset.frames[1].element(xpath: '//*[@id="topnavmaincontentdiv"]/table[2]/tbody/tr/td/fieldset/table[1]/tbody/tr/td[2]/form/input[3]').click
+        element = browser.frameset.frames[1].button(value: 'View Bill Of Lading Image')
+        if element.exists?
+          element.click
+        else
+          browser.close
+          raise ReactiveShipping::ResponseError, "API Error: #{self.class.name}: Document not found"
+        end
       else
-        browser.frameset.frames[1].element(xpath: '//*[@id="topnavmaincontentdiv"]/table[2]/tbody/tr/td/fieldset/table[1]/tbody/tr/td[3]/form/input[3]').click
+        element = browser.frameset.frames[1].button(value: 'View Delivery Receipt Image')
+        if element.exists?
+          element.click
+        else
+          browser.close
+          raise ReactiveShipping::ResponseError, "API Error: #{self.class.name}: Document not found"
+        end
       end
 
       url = nil
       browser.windows.last.use do
         url = browser.url
+        if url.include?('viewdoc.php')
+          browser.close
+          raise ReactiveShipping::ResponseError, "API Error: #{self.class.name}: Documnent cannot be downloaded"
+        end
       end
 
       browser.close
