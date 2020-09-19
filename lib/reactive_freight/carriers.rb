@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 ReactiveShipping::Carriers.register :BTVP, 'reactive_freight/carriers/btvp'
+ReactiveShipping::Carriers.register :CLNI, 'reactive_freight/carriers/clni'
 ReactiveShipping::Carriers.register :DPHE, 'reactive_freight/carriers/dphe'
 ReactiveShipping::Carriers.register :RDFS, 'reactive_freight/carriers/rdfs'
 ReactiveShipping::Carriers.register :WRDS, 'reactive_freight/carriers/wrds'
