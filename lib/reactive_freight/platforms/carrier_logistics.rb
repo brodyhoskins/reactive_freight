@@ -256,7 +256,7 @@ module ReactiveShipping
         end
       end
 
-      calculated_accessorials = build_calculated_accessorials(packages)
+      calculated_accessorials = build_calculated_accessorials(packages, origin, destination)
       params << calculated_accessorials.uniq.join unless calculated_accessorials.blank?
       params
     end
