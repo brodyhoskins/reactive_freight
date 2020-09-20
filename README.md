@@ -30,6 +30,7 @@ Carriers differ from platforms in that they have unique web services whereas pla
 * [Dependable Highway Express](https://godependable.com)
 * [Frontline Freight](http://frontlinefreightinc.com)
 * [The Custom Companies](https://www.customco.com)
+* [Peninsula Truck Lines](http://www.peninsulatruck.com/)
 * [Roadrunner Transportation Services](https://www.rrts.com)
 * [Total Transportation & Distribution](https://www.ttdwest.com)
 * [Western Regional Delivery Service](http://www.wrds.com)
