@@ -23,6 +23,8 @@ module ReactiveShipping
     end
 
     def serviceable_accessorials?(accessorials)
+      return true if accessorials.blank?
+
       if !self.class::REACTIVE_FREIGHT_CARRIER ||
          !@conf.dig(:accessorials, :mappable) ||
          !@conf.dig(:accessorials, :unquotable) ||
