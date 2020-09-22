@@ -25,7 +25,7 @@ Gem::Specification.new do |spec|
   DESC
   spec.homepage = 'https://github.com/brodyhoskins/reactive_freight'
 
-  spec.files = Dir['lib/*.rb']
+  spec.files = Dir['lib/**/*']
   spec.files += Dir['[A-Z]*'] + Dir['test/**/*']
   spec.files.reject! { |fn| fn.include? 'CVS' }
   spec.require_paths = ['lib']
