@@ -47,12 +47,15 @@ module ReactiveShipping
         headers = headers.merge(token)
       end
 
-      {
+      request = {
         url: build_url(action, options),
         headers: headers,
         method: @conf.dig(:api, :methods, action),
         body: body
       }
+
+      save_request(request)
+      request
     end
 
     def commit(request)

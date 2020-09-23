@@ -28,19 +28,11 @@ module ReactiveShipping
         end
       end
 
-      if destination.city == 'Boston' && destination.state == 'MA'
-        accessorials << '&BOSP=yes'
-      end
-      if origin.city == 'Boston' && origin.state == 'MA'
-        accessorials << '&BOSD=yes'
-      end
+      accessorials << '&BOSP=yes' if destination.city == 'Boston' && destination.state == 'MA'
+      accessorials << '&BOSD=yes' if origin.city == 'Boston' && origin.state == 'MA'
 
-      if destination.state == 'SD'
-        accessorials << '&SDDLY=yes'
-      end
-      if origin.state == 'SD'
-        accessorials << '&SDPU=yes'
-      end
+      accessorials << '&SDDLY=yes' if destination.state == 'SD'
+      accessorials << '&SDPU=yes' if origin.state == 'SD'
 
       # TODO: Add support for:
       # NYBDY, NYC BUROUGH DELY

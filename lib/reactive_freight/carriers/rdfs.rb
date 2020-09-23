@@ -127,7 +127,7 @@ module ReactiveShipping
 
       service_deliveryoptions = service_deliveryoptions.uniq.to_a
 
-      {
+      request = {
         'request' => {
           origin_zip: origin.to_hash[:postal_code].to_s,
           destination_zip: destination.to_hash[:postal_code].to_s,
@@ -148,6 +148,9 @@ module ReactiveShipping
           account: options[:account]
         }
       }
+
+      save_request(request)
+      request
     end
 
     def parse_rate_response(origin, destination, response)
@@ -229,13 +232,13 @@ module ReactiveShipping
 
       if (response.status[0] != '200') || !json.dig('SearchResults')
         status = json.dig('error') || "API Error: HTTP #{response.status[0]}"
-        return TrackingResponse.new(false, status, json, carrier: @@name, json: json, response: response)
+        return TrackingResponse.new(false, status, json, carrier: @@name, json: json, response: response, request: last_request)
       end
 
       search_result = json.dig('SearchResults')[0]
       if search_result.dig('Shipment', 'ProNumber').downcase.include?('not available')
         status = "API Error: #{@@name} tracking number not found"
-        return TrackingResponse.new(false, status, json, carrier: @@name, json: json, response: response)
+        return TrackingResponse.new(false, status, json, carrier: @@name, json: json, response: response, request: last_request)
       end
 
       receiver_address = Location.new(

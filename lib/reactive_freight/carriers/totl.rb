@@ -88,7 +88,7 @@ module ReactiveShipping
         response.to_hash,
         rates: rate_estimates,
         response: response,
-        request: nil
+        request: last_request
       )
     end
   end

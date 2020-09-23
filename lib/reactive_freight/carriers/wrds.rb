@@ -31,7 +31,7 @@ module ReactiveShipping
     protected
 
     def build_url(action, *)
-      "#{@conf.dig(:api, :domain)}#{@conf.dig(:api, :endpoints, action)}"
+      url = "#{@conf.dig(:api, :domain)}#{@conf.dig(:api, :endpoints, action)}"
     end
 
     def commit(action, options = {})
@@ -61,13 +61,11 @@ module ReactiveShipping
       file = Tempfile.new
 
       File.open(file.path, 'wb') do |file|
-        begin
-          URI.parse(url).open do |input|
-            file.write(input.read)
-          end
-        rescue OpenURI::HTTPError
-          raise ReactiveShipping::ResponseError, "API Error: #{@@name}: Document not found"
+        URI.parse(url).open do |input|
+          file.write(input.read)
         end
+      rescue OpenURI::HTTPError
+        raise ReactiveShipping::ResponseError, "API Error: #{@@name}: Document not found"
       end
 
       file = Magick::ImageList.new(file.path)
@@ -209,7 +207,8 @@ module ReactiveShipping
         shipper_address: shipper_address,
         origin: shipper_address,
         destination: receiver_address,
-        tracking_number: tracking_number
+        tracking_number: tracking_number,
+        request: last_request
       )
     end
   end

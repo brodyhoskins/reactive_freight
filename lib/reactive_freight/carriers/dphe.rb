@@ -89,7 +89,7 @@ module ReactiveShipping
       end
       shipment_detail = shipment_detail.join('|')
 
-      {
+      request = {
         customer_code: @options[:account],
         origin_zip: origin.to_hash[:postal_code].to_s.upcase,
         destination_zip: destination.to_hash[:postal_code].to_s.upcase,
@@ -97,6 +97,9 @@ module ReactiveShipping
         rating_type: '', # per API documentation
         accessorials: accessorials
       }
+
+      save_request(request)
+      request
     end
 
     def parse_rate_response(origin, destination, response)
@@ -154,7 +157,9 @@ module ReactiveShipping
 
     # Tracking
     def build_tracking_request(tracking_number)
-      { pro_number: tracking_number }
+      request = { pro_number: tracking_number }
+      save_request(request)
+      request
     end
 
     def parse_city_state(str)
@@ -196,7 +201,7 @@ module ReactiveShipping
     def parse_tracking_response(response)
       unless response.dig(:get_tracking_response, :get_tracking_result, :tracking_status_response)
         status = json.dig('error') || "API Error: HTTP #{response.status[0]}"
-        return TrackingResponse.new(false, status, json, carrier: @@name, json: json, response: response)
+        return TrackingResponse.new(false, status, json, carrier: @@name, json: json, response: response, request: last_request)
       end
 
       search_result = response.dig(:get_tracking_response, :get_tracking_result)
@@ -282,7 +287,8 @@ module ReactiveShipping
         shipper_address: shipper_address,
         origin: shipper_address,
         destination: receiver_address,
-        tracking_number: tracking_number
+        tracking_number: tracking_number,
+        request: last_request
       )
     end
   end

@@ -93,13 +93,11 @@ module ReactiveShipping
       file = File.new(path, 'w')
 
       File.open(file.path, 'wb') do |file|
-        begin
-          URI.parse(url).open do |input|
-            file.write(input.read)
-          end
-        rescue OpenURI::HTTPError
-          raise ReactiveShipping::ResponseError, "API Error: #{@@name}: Document not found"
+        URI.parse(url).open do |input|
+          file.write(input.read)
         end
+      rescue OpenURI::HTTPError
+        raise ReactiveShipping::ResponseError, "API Error: #{@@name}: Document not found"
       end
 
       File.exist?(path) ? path : false
@@ -160,7 +158,7 @@ module ReactiveShipping
 
       accessorials = accessorials.uniq.to_a
 
-      {
+      request = {
         'ns:args0' => {
           securityinfo: build_soap_header,
           quote: {
@@ -192,6 +190,9 @@ module ReactiveShipping
           }
         }
       }
+
+      save_request(request)
+      request
     end
 
     def parse_rate_response(origin, destination, packages, response)
@@ -276,12 +277,15 @@ module ReactiveShipping
 
     # Tracking
     def build_tracking_request(tracking_number)
-      {
+      request = {
         'ns:args0' => {
           securityinfo: build_soap_header,
           pronumber: tracking_number
         }
       }
+
+      save_request(request)
+      request
     end
 
     def parse_location(code)
@@ -306,7 +310,7 @@ module ReactiveShipping
     def parse_tracking_response(response)
       unless response.dig(:tracktrace_response, :return, :currentstatus, :errorcode).blank?
         status = response.dig(:tracktrace_response, :return, :currentstatus, :errorcode)
-        return TrackingResponse.new(false, status, response, carrier: @@name, xml: response, response: response)
+        return TrackingResponse.new(false, status, response, carrier: @@name, xml: response, response: response, request: last_request)
       end
 
       receiver_address = Location.new(
@@ -372,7 +376,8 @@ module ReactiveShipping
         shipper_address: shipper_address,
         origin: shipper_address,
         destination: receiver_address,
-        tracking_number: tracking_number
+        tracking_number: tracking_number,
+        request: last_request
       )
     end
   end

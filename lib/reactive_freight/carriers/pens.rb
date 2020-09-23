@@ -51,7 +51,7 @@ module ReactiveShipping
     def build_rate_request(origin, destination, packages, options = {})
       options = @options.merge(options)
 
-      {
+      request = {
         user_id: @options[:username],
         password: @options[:password],
         account: @options[:account],
@@ -67,6 +67,9 @@ module ReactiveShipping
         plt_total_weight: packages.map(&:lbs).inject(0) { |sum, lbs| sum += lbs }.ceil,
         plt_width_list: packages.map(&:inches).inject([]) { |lengths, inches| lengths << inches[1].ceil }.join(',')
       }
+
+      save_request(request)
+      request
     end
 
     def parse_rate_response(origin, destination, response)

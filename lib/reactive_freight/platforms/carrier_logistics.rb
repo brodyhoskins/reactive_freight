@@ -105,13 +105,11 @@ module ReactiveShipping
       file = File.new(path, 'w')
 
       File.open(file.path, 'wb') do |file|
-        begin
-          URI.parse(url).open do |input|
-            file.write(input.read)
-          end
-        rescue OpenURI::HTTPError
-          raise ReactiveShipping::ResponseError, "API Error: #{self.class.name}: Document not found"
+        URI.parse(url).open do |input|
+          file.write(input.read)
         end
+      rescue OpenURI::HTTPError
+        raise ReactiveShipping::ResponseError, "API Error: #{self.class.name}: Document not found"
       end
 
       File.exist?(path) ? path : false
@@ -145,6 +143,7 @@ module ReactiveShipping
 
     def parse_tracking_response(tracking_number)
       url = "#{build_url(:track)}wbtn=PRO&wpro1=#{tracking_number}"
+      save_request({ url: url })
 
       begin
         response = HTTParty.get(url)
@@ -225,7 +224,8 @@ module ReactiveShipping
         shipper_address: shipper_address,
         origin: shipper_address,
         destination: receiver_address,
-        tracking_number: tracking_number
+        tracking_number: tracking_number,
+        request: last_request
       )
     end
 
@@ -259,6 +259,8 @@ module ReactiveShipping
 
       calculated_accessorials = build_calculated_accessorials(packages, origin, destination)
       params << calculated_accessorials.uniq.join unless calculated_accessorials.blank?
+
+      save_request({ params: params })
       params
     end
 
@@ -304,7 +306,7 @@ module ReactiveShipping
         response.to_hash,
         rates: rate_estimates,
         response: response,
-        request: nil
+        request: last_request
       )
     end
   end
