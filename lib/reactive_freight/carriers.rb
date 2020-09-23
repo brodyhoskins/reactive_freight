@@ -9,5 +9,6 @@ ReactiveShipping::Carriers.register :WRDS, 'reactive_freight/carriers/wrds'
 # Carriers based on platforms
 ReactiveShipping::Carriers.register :CLNI, 'reactive_freight/carriers/clni'
 ReactiveShipping::Carriers.register :CTBV, 'reactive_freight/carriers/ctbv'
+ReactiveShipping::Carriers.register :JFJTransportation, 'reactive_freight/carriers/jfj_transportation'
 ReactiveShipping::Carriers.register :FCSY, 'reactive_freight/carriers/fcsy'
 ReactiveShipping::Carriers.register :TOTL, 'reactive_freight/carriers/totl'
