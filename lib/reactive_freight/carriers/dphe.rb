@@ -73,11 +73,11 @@ module ReactiveShipping
       longest_dimension = packages.inject([]) { |_arr, p| [p.inches[0], p.inches[1]] }.max.ceil
       if longest_dimension >= 336
         accessorials << 'X29'
-      elsif longest_dimension >= 240 && longest_dimensions < 336
+      elsif longest_dimension >= 240 && longest_dimension < 336
         accessorials << 'X28'
-      elsif longest_dimension >= 144 && longest_dimensions < 240
+      elsif longest_dimension >= 144 && longest_dimension < 240
         accessorials << 'X20'
-      elsif longest_dimension >= 96 && longest_dimensions < 144
+      elsif longest_dimension >= 96 && longest_dimension < 144
         accessorials << 'X12'
       end
 
