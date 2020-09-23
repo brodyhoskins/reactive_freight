@@ -12,7 +12,7 @@ module ReactiveShipping
       @last_request = nil
       @test_mode = @options[:test]
 
-      conf_path = File.join(__dir__, 'configuration', 'platforms', 'carrier_logistics.yml')
+      conf_path = File.join(__dir__, 'configuration', 'platforms', "#{self.class.ancestors[1].name.split('::')[1].underscore}.yml")
       @conf = YAML.safe_load(File.read(conf_path), permitted_classes: [Symbol])
 
       conf_path = File.join(__dir__, 'configuration', 'carriers', "#{self.class.to_s.split('::')[1].downcase}.yml")
