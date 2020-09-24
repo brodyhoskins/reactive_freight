@@ -94,13 +94,23 @@ end
 
 ### Quoting
 
+**Note:** Dimensions from ReactiveShipping were passed as an array in `height x width x length` order. While this is still supported, explicitly setting dimensions in a hash (as demonstrated below) is highly recommended to reduce confusion.
+
 ```ruby
 packages = [
   ReactiveShipping::Package.new(371 * 16,            # 371 lbs
-                                [40, 48, 47],        # inches
+                                {
+                                  length: 40,        # inches
+                                  width: 48,
+                                  height: 47
+                                },
                                 units: :imperial),
   ReactiveShipping::Package.new(371 * 16,            # 371 lbs
-                                [40, 48, 47],        # inches
+                                {
+                                  length: 40,        # inches
+                                  width: 48,
+                                  height: 47
+                                },
                                 freight_class: 125,  # override calculated freight class
                                 units: :imperial)
 ]
@@ -125,5 +135,3 @@ response = carrier.find_rates(origin, destination, packages, accessorials: acces
 rates = response.rates
 rates = response.rates.sort_by(&:price).collect { |rate| [rate.service_name, rate.price] }
 ```
-
-Dimensions for packages are in `Height x Width x Length` order.
