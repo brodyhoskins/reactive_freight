@@ -13,7 +13,7 @@ module ReactiveShipping
     def build_calculated_accessorials(packages, origin, destination)
       accessorials = []
 
-      longest_dimension = packages.inject([]) { |_arr, p| [p.inches[0], p.inches[1]] }.max.ceil
+      longest_dimension = packages.inject([]) { |_arr, p| [p.length(:in), p.width(:in)] }.max.ceil
       if longest_dimension > 48
         if longest_dimension < 240
           accessorials << '&HHG=yes' # standard overlength fee

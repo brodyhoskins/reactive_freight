@@ -118,7 +118,7 @@ module ReactiveShipping
         end
       end
 
-      longest_dimension = packages.inject([]) { |_arr, p| [p.inches[0], p.inches[1]] }.max.ceil
+      longest_dimension = packages.inject([]) { |_arr, p| [p.length(:in), p.width(:in)] }.max.ceil
       if longest_dimension > 144
         service_deliveryoptions << { serviceoptions: { service_code: 'EXL' } }
       elsif longest_dimension > 96

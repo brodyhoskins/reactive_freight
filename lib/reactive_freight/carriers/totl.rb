@@ -45,18 +45,18 @@ module ReactiveShipping
             oversized_pallets_price = 0
             packages.each do |package|
               short_side, long_side = nil
-              if !package.inches[0].blank? && !package.inches[1].blank? && !package.inches[2].blank?
-                long_side = package.inches[0] > package.inches[1] ? package.inches[0] : package.inches[1]
-                short_side = package.inches[0] < package.inches[1] ? package.inches[0] : package.inches[1]
+              if !package.length(:in).blank? && !package.width(:in).blank? && !package.height(:in).blank?
+                long_side = package.length(:in) > package.width(:in) ? package.length(:in) : package.width(:in)
+                short_side = package.length(:in) < package.width(:in) ? package.length(:in) : package.width(:in)
               end
 
               next unless short_side &&
                           long_side &&
-                          package.inches[2] &&
+                          package.height(:in) &&
                           (
                             short_side > 40 ||
                             long_side > 48 ||
-                            package.inches[2] > 84
+                            package.height(:in) > 84
                           )
 
               oversized_pallets_price += 1500

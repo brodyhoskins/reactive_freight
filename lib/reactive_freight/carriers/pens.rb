@@ -63,9 +63,9 @@ module ReactiveShipping
         weight_list: packages.map(&:lbs).inject([]) { |weights, lbs| weights << lbs.ceil }.join(','),
         none_palletized_mode: 'N',
         plt_count_list: Array.new(packages.size, 1).join(','),
-        plt_length_list: packages.map(&:inches).inject([]) { |lengths, inches| lengths << inches[0].ceil }.join(','),
+        plt_length_list: packages.map(&:inches).inject([]) { |lengths, inches| lengths << length(:in).ceil }.join(','),
         plt_total_weight: packages.map(&:lbs).inject(0) { |sum, lbs| sum += lbs }.ceil,
-        plt_width_list: packages.map(&:inches).inject([]) { |lengths, inches| lengths << inches[1].ceil }.join(',')
+        plt_width_list: packages.map(&:inches).inject([]) { |lengths, inches| lengths << width(:in).ceil }.join(',')
       }
 
       save_request(request)

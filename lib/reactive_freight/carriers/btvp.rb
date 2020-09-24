@@ -209,7 +209,7 @@ module ReactiveShipping
         else
           cost = (response.dig(:getquote_response, :return, :rating, :amount).to_f * 100).to_i
 
-          longest_dimension = packages.inject([]) { |_arr, p| [p.inches[0], p.inches[1]] }.max.ceil
+          longest_dimension = packages.inject([]) { |_arr, p| [p.length(:in), p.width(:in)] }.max.ceil
           if !@options[:tariff].blank?
             if longest_dimension >= 168
               cost += @options[:tariff].dig('overlength_fees').dig('over_14_ft')
