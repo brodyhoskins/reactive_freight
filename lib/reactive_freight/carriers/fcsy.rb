@@ -10,9 +10,7 @@ module ReactiveShipping
     # Documents
 
     # Rates
-    def build_calculated_accessorials(*)
-      []
-    end
+    def build_calculated_accessorials(*); end
 
     # Tracking
 
