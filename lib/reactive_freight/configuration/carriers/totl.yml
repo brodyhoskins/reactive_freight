@@ -44,8 +44,6 @@
     - :mall_pickup
     - :marina_delivery
     - :marina_pickup
-    - :military_site_delivery
-    - :military_site_pickup
     - :mine_site_delivery
     - :mine_site_pickup
     - :motel_delivery
@@ -95,6 +93,8 @@
     - :guaranteed_delivery
     - :guaranteed_delivery_am
     - :guaranteed_delivery_pm
+    - :military_site_delivery
+    - :military_site_pickup
     - :winery_delivery
     - :winery_pickup
 :api:
