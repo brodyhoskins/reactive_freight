@@ -176,7 +176,7 @@ module ReactiveShipping
         location = tr.css('td')[1].text
 
         event_key = nil
-        @@conf.dig(:events, :types).each do |key, val|
+        @conf.dig(:events, :types).each do |key, val|
           if event.downcase.include?(val) && !event.downcase.include?('estimated')
             event_key = key
             break
