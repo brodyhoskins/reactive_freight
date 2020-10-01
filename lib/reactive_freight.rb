@@ -3,7 +3,7 @@
 require 'httparty'
 require 'nokogiri'
 require 'open-uri'
-require 'RMagick'
+require 'rmagick'
 require 'savon'
 require 'watir'
 require 'webdrivers/chromedriver'
