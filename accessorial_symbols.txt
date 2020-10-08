@@ -1,4 +1,5 @@
 :afterhours_delivery
+:afterhours_pickup
 :airport_delivery
 :airport_pickup
 :amusement_park_delivery
@@ -22,6 +23,7 @@
 :dock_pickup
 :driver_assist
 :early_morning_delivery
+:early_morning_pickup
 :fair_delivery
 :fair_pickup
 :farm_delivery
