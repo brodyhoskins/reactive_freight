@@ -17,6 +17,8 @@ module ReactiveShipping
 
       conf_path = File.join(__dir__, 'configuration', 'carriers', "#{self.class.to_s.split('::')[1].underscore}.yml")
       @conf = @conf.deep_merge(YAML.safe_load(File.read(conf_path), permitted_classes: [Symbol]))
+
+      @rates_with_excessive_length_fees = @conf.dig(:attributes, :rates, :with_excessive_length_fees)
     end
 
     def find_bol(*)
