@@ -11,6 +11,7 @@ require 'yaml'
 
 require 'reactive_shipping'
 require 'reactive_freight/package'
+require 'reactive_freight/rate_estimate'
 require 'reactive_freight/shipment_event'
 
 require 'reactive_freight/carrier'
