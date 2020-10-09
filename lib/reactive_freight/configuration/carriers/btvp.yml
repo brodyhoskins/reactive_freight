@@ -131,6 +131,9 @@
   :use_ssl:
     :rates: false
     :track: false
+:attributes:
+  :rates:
+    :with_excessive_length_fees: false
 :documents:
   :types:
     :bol: Bill of Lading

@@ -192,7 +192,8 @@ module ReactiveShipping
               estimate_reference: nil,
               total_cost: cost,
               total_price: cost,
-              currency: 'USD'
+              currency: 'USD',
+              with_excessive_length_fees: @conf.dig(:attributes, :rates, :with_excessive_length_fees)
             )
           ]
         else

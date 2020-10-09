@@ -108,6 +108,9 @@
     :track: /services/track.asmx?WSDL
   :use_ssl:
     :rates: false
+:attributes:
+  :rates:
+    :with_excessive_length_fees: true
 :events:
   :types:
     :arrived_at_terminal: linehaul arrived

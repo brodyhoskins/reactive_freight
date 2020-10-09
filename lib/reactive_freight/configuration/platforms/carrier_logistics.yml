@@ -10,6 +10,9 @@
     :pod: true
     :rates: true
     :track: true
+:attributes:
+  :rates:
+    :with_excessive_length_fees: false
 :events:
   :types:
     :arrived_at_terminal: trailer arrived

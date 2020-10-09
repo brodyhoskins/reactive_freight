@@ -109,6 +109,9 @@
     :pod: false
     :rates: false
     :track: true
+:attributes:
+  :rates:
+    :with_excessive_length_fees: true
 :services:
   :types:
     - :standard_ltl

@@ -11,6 +11,9 @@
       :rates: http://peninsulatruck.com/WebServices # even over non-encrypted HTTP
   :use_ssl:
     :rates: true
+:attributes:
+  :rates:
+    :with_excessive_length_fees: false
 :services:
   :mappable:
     :next_day_ltl: next business day

@@ -109,6 +109,9 @@
   :methods:
     :rates: :post
   :use_ssl: true
+:attributes:
+  :rates:
+    :with_excessive_length_fees: false
 :services:
   :types:
     - :standard_ltl
