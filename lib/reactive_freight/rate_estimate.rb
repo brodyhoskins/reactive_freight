@@ -37,7 +37,7 @@ module ReactiveShipping
       self.shipment_options = options[:shipment_options] || []
       self.shipping_date = options[:shipping_date]
       self.total_price = options[:total_price]
-      self.with_excessive_length_fees = options[:with_excessive_length_fees] || nil
+      self.with_excessive_length_fees = options.dig(:with_excessive_length_fees)
 
       self.delivery_date = @delivery_range.last
     end
