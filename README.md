@@ -29,6 +29,7 @@ Carriers differ from platforms in that they have unique web services whereas pla
 * [Clear Lane Freight Systems](https://clearlanefreight.com)
 * [The Custom Companies](https://www.customco.com)
 * [Dependable Highway Express](https://godependable.com)
+* [Forward Air](https://www.forwardair.com)
 * [Frontline Freight](http://frontlinefreightinc.com)
 * [Peninsula Truck Lines](http://www.peninsulatruck.com/)
 * [Roadrunner Transportation Services](https://www.rrts.com)
