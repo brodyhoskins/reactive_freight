@@ -2,6 +2,7 @@
 
 ReactiveShipping::Carriers.register :BTVP, 'reactive_freight/carriers/btvp'
 ReactiveShipping::Carriers.register :DPHE, 'reactive_freight/carriers/dphe'
+ReactiveShipping::Carriers.register :FWDA, 'reactive_freight/carriers/fwda'
 ReactiveShipping::Carriers.register :PENS, 'reactive_freight/carriers/pens'
 ReactiveShipping::Carriers.register :RDFS, 'reactive_freight/carriers/rdfs'
 ReactiveShipping::Carriers.register :WRDS, 'reactive_freight/carriers/wrds'
