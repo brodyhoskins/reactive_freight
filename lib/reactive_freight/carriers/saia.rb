@@ -157,9 +157,9 @@ module ReactiveShipping
             )
 
             [
-              { guaranteed_delivery: response.dig(:guarantee_amount) },
-              { guaranteed_delivery_am: response.dig(:guarantee_amount12pm) },
-              { guaranteed_delivery_pm: response.dig(:guarantee_amount2pm) }
+              { guaranteed_ltl: response.dig(:guarantee_amount) },
+              { guaranteed_ltl_am: response.dig(:guarantee_amount12pm) },
+              { guaranteed_ltl_pm: response.dig(:guarantee_amount2pm) }
             ].each do |service|
               if !service.values[0] == '0' && !service.values[0].blank?
                 cost = service.values[0].sub('.', '').to_i
