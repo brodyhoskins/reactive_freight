@@ -1,0 +1,4 @@
+:standard_ltl
+:guaranteed_ltl
+:guaranteed_ltl_am
+:guaranteed_ltl_pm
