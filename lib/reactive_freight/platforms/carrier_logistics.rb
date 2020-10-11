@@ -289,7 +289,7 @@ module ReactiveShipping
                 origin,
                 destination,
                 self.class.name.split('::')[1],
-                :standard,
+                :standard_ltl,
                 delivery_range: delivery_range,
                 estimate_reference: nil,
                 total_price: cost,
