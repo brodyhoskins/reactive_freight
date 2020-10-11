@@ -38,8 +38,7 @@ module ReactiveShipping
           message = response['error']
         else
           cost = response.dig('ratequote', 'quotetotal').delete(',').delete('.').to_i
-          days = response.dig('ratequote', 'busdays').to_i
-          delivery_range = [days, days]
+          transit_days = response.dig('ratequote', 'busdays').to_i
           if cost
             # Carrier-specific pricing structure
             oversized_pallets_price = 0
@@ -69,7 +68,7 @@ module ReactiveShipping
                 destination,
                 self.class.name.split('::')[1],
                 :standard_ltl,
-                delivery_range: delivery_range,
+                transit_days: transit_days,
                 estimate_reference: nil,
                 total_price: cost,
                 currency: 'USD',

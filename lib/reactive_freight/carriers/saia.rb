@@ -139,8 +139,7 @@ module ReactiveShipping
           cost = response.dig(:total_invoice)
           if cost
             cost = cost.sub('.', '').to_i
-            days = response.dig(:standard_service_days).to_i
-            delivery_range = [days, days]
+            transit_days = response.dig(:standard_service_days).to_i
             estimate_reference = response.dig(:quote_number)
 
             rate_estimates = []
@@ -149,7 +148,7 @@ module ReactiveShipping
               destination,
               @@name,
               :standard_ltl,
-              delivery_range: delivery_range,
+              transit_days: transit_days,
               estimate_reference: estimate_reference,
               total_cost: cost,
               total_price: cost,

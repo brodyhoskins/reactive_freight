@@ -179,8 +179,7 @@ module ReactiveShipping
         cost = response.dig('quoteTotal')
         if cost
           cost = (cost.to_f * 100).to_i
-          days = response.dig('transitDaysTotal')
-          delivery_range = [days, days]
+          transit_days = response.dig('transitDaysTotal')
 
           rate_estimates = [
             RateEstimate.new(
@@ -188,7 +187,7 @@ module ReactiveShipping
               destination,
               @@name,
               :standard_ltl,
-              delivery_range: delivery_range,
+              transit_days: transit_days,
               estimate_reference: nil,
               total_cost: cost,
               total_price: cost,

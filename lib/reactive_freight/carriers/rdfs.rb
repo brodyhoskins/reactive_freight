@@ -167,13 +167,12 @@ module ReactiveShipping
           message = response[:error]
         else
           cost = response.dig('rate_quote_by_account_response', 'rate_quote_by_account_result', 'net_charge')
-          days = response.dig(
+          transit_days = response.dig(
             'rate_quote_by_account_response',
             'rate_quote_by_account_result',
             'routing_info',
             'estimated_transit_days'
           ).to_i
-          delivery_range = [days, days]
           estimate_reference = response.dig(
             'rate_quote_by_account_response',
             'rate_quote_by_account_result',
@@ -186,7 +185,7 @@ module ReactiveShipping
                 destination,
                 @@name,
                 :standard_ltl,
-                delivery_range: delivery_range,
+                transit_days: transit_days,
                 estimate_reference: estimate_reference,
                 total_cost: cost,
                 total_price: cost,

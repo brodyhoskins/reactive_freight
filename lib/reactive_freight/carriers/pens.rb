@@ -95,8 +95,7 @@ module ReactiveShipping
           end
 
           cost = result.dig('quote', 'gross_charge').sub(',', '').sub('.', '').to_i
-          days = service_type == :next_day_ltl ? 1 : nil # TODO: Detect correctly
-          delivery_range = [days, days]
+          transit_days = service_type == :next_day_ltl ? 1 : nil # TODO: Detect correctly
           estimate_reference = result.dig('quote', 'quote_number')
           if cost
             rate_estimates = [
@@ -105,7 +104,7 @@ module ReactiveShipping
                 destination,
                 @@name,
                 service_type,
-                delivery_range: delivery_range,
+                transit_days: transit_days,
                 estimate_reference: estimate_reference,
                 total_cost: cost,
                 total_price: cost,

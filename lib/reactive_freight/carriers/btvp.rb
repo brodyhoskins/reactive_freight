@@ -224,7 +224,7 @@ module ReactiveShipping
             warn 'API Warning: Overlength fees not applied because `tariff` is empty!'
           end
 
-          days = response.dig(
+          transit_days = response.dig(
             :getquote_response,
             :return,
             :service,
@@ -236,7 +236,6 @@ module ReactiveShipping
             days += 1 if response.dig(:getquote_response, :return, :service, :destination, weekday) == 'N'
           end
 
-          delivery_range = [days, days]
           estimate_reference = response.dig(
             :getquote_response,
             :return,
@@ -251,7 +250,7 @@ module ReactiveShipping
                 destination,
                 @@name,
                 :standard_ltl,
-                delivery_range: delivery_range,
+                transit_days: transit_days,
                 estimate_reference: estimate_reference,
                 total_cost: cost,
                 total_price: cost,
