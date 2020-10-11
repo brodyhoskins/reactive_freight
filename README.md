@@ -33,6 +33,7 @@ Carriers differ from platforms in that they have unique web services whereas pla
 * [Frontline Freight](http://frontlinefreightinc.com)
 * [Peninsula Truck Lines](http://www.peninsulatruck.com/)
 * [Roadrunner Transportation Services](https://www.rrts.com)
+* [Saia](https://www.saia.com)
 * [Total Transportation & Distribution](https://www.ttdwest.com)
 * [Western Regional Delivery Service](http://www.wrds.com)
 
