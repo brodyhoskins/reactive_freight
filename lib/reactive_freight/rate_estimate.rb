@@ -7,7 +7,7 @@ module ReactiveShipping
                   :description, :destination, :estimate_reference, :expires_at,
                   :insurance_price, :messages, :negotiated_rate, :origin,
                   :package_rates, :phone_required, :pickup_time, :service_code,
-                  :service_name, :shipment_options, :shipping_date,
+                  :service_name, :shipment_options, :shipping_date, :transit_days,
                   :with_excessive_length_fees
 
     def initialize(origin, destination, carrier, service_name, options = {})
@@ -36,6 +36,7 @@ module ReactiveShipping
       self.service_code = options[:service_code]
       self.shipment_options = options[:shipment_options] || []
       self.shipping_date = options[:shipping_date]
+      self.transit_days = options[:transit_days]
       self.total_price = options[:total_price]
       self.with_excessive_length_fees = options.dig(:with_excessive_length_fees)
 
