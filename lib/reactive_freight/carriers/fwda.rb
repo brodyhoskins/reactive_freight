@@ -13,6 +13,32 @@ module ReactiveShipping
       'Content-Type' => 'application/json'
     }.freeze
 
+    # Override Carrier#serviceable_accessorials? since we have separate delivery/pickup accessorials
+    def serviceable_accessorials?(accessorials)
+      return true if accessorials.blank?
+
+      if !self.class::REACTIVE_FREIGHT_CARRIER ||
+         !@conf.dig(:accessorials, :mappable) ||
+         !@conf.dig(:accessorials, :unquotable) ||
+         !@conf.dig(:accessorials, :unserviceable)
+        raise NotImplementedError, "#{self.class.name}: #serviceable_accessorials? not supported"
+      end
+
+      serviceable_accessorials = @conf.dig(:accessorials, :mappable, :delivery).keys + 
+                                 @conf.dig(:accessorials, :mappable, :pickup).keys + 
+                                 @conf.dig(:accessorials, :unquotable)
+      serviceable_count = (serviceable_accessorials & accessorials).size
+
+      unserviceable_accessorials = @conf.dig(:accessorials, :unserviceable)
+      unserviceable_count = (unserviceable_accessorials & accessorials).size
+
+      if serviceable_count != accessorials.size || !unserviceable_count.zero?
+        raise ArgumentError, "#{self.class.name}: Some accessorials unserviceable"
+      end
+
+      true
+    end
+
     # Documents
 
     # Rates
@@ -107,12 +133,12 @@ module ReactiveShipping
 
       unless delivery_accessorials.blank?
         # Remove duplicate delivery appointment accessorial when residential delivery (included with RDE)
-        delivery_accessorials -= ['ADE'] if accessorials.include?('RDE')
+        delivery_accessorials -= ['ADE'] if delivery_accessorials.include?('RDE')
       end
 
       unless pickup_accessorials.blank?
         # Remove duplicate pickup appointment accessorial when residential pickup (included with RPU)
-        pickup_accessorials -= ['APP'] if accessorials.include?('RPU')
+        pickup_accessorials -= ['APP'] if pickup_accessorials.include?('RPU')
       end
 
       delivery_accessorials = delivery_accessorials.uniq
