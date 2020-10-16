@@ -6,6 +6,7 @@ ReactiveShipping::Carriers.register :FWDA, 'reactive_freight/carriers/fwda'
 ReactiveShipping::Carriers.register :PENS, 'reactive_freight/carriers/pens'
 ReactiveShipping::Carriers.register :RDFS, 'reactive_freight/carriers/rdfs'
 ReactiveShipping::Carriers.register :SAIA, 'reactive_freight/carriers/saia'
+ReactiveShipping::Carriers.register :SEFL, 'reactive_freight/carriers/sefl'
 ReactiveShipping::Carriers.register :WRDS, 'reactive_freight/carriers/wrds'
 
 # Carriers based on platforms
