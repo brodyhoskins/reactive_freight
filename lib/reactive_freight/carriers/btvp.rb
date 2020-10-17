@@ -4,8 +4,9 @@ module ReactiveShipping
   class BTVP < ReactiveShipping::Carrier
     REACTIVE_FREIGHT_CARRIER = true
 
-    cattr_reader :name
+    cattr_reader :name, :scac
     @@name = 'Best Overnite Express'
+    @@scac = 'BTVP'
 
     def requirements
       %i[username password]
@@ -248,7 +249,7 @@ module ReactiveShipping
               RateEstimate.new(
                 origin,
                 destination,
-                @@name,
+                self.class,
                 :standard_ltl,
                 transit_days: transit_days,
                 estimate_reference: estimate_reference,
@@ -310,7 +311,7 @@ module ReactiveShipping
     def parse_tracking_response(response)
       unless response.dig(:tracktrace_response, :return, :currentstatus, :errorcode).blank?
         status = response.dig(:tracktrace_response, :return, :currentstatus, :errorcode)
-        return TrackingResponse.new(false, status, response, carrier: @@name, xml: response, response: response, request: last_request)
+        return TrackingResponse.new(false, status, response, carrier: "#{@@scac}, #{@@name}", xml: response, response: response, request: last_request)
       end
 
       receiver_address = Location.new(
@@ -363,7 +364,7 @@ module ReactiveShipping
         true,
         shipment_events.last.status,
         response,
-        carrier: @@name,
+        carrier: "#{@@scac}, #{@@name}",
         xml: response,
         response: response,
         status: status,

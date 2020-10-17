@@ -4,8 +4,9 @@ module ReactiveShipping
   class RDFS < ReactiveShipping::Carrier
     REACTIVE_FREIGHT_CARRIER = true
 
-    cattr_reader :name
+    cattr_reader :name, :scac
     @@name = 'Roadrunner Transportation Services'
+    @@scac = 'RRDS'
 
     def requirements
       %i[username password account]
@@ -183,7 +184,7 @@ module ReactiveShipping
               RateEstimate.new(
                 origin,
                 destination,
-                @@name,
+                self.class,
                 :standard_ltl,
                 transit_days: transit_days,
                 estimate_reference: estimate_reference,
@@ -232,13 +233,13 @@ module ReactiveShipping
 
       if (response.status[0] != '200') || !json.dig('SearchResults')
         status = json.dig('error') || "API Error: HTTP #{response.status[0]}"
-        return TrackingResponse.new(false, status, json, carrier: @@name, json: json, response: response, request: last_request)
+        return TrackingResponse.new(false, status, json, carrier: "#{@@scac}, #{@@name}", json: json, response: response, request: last_request)
       end
 
       search_result = json.dig('SearchResults')[0]
       if search_result.dig('Shipment', 'ProNumber').downcase.include?('not available')
         status = "API Error: #{@@name} tracking number not found"
-        return TrackingResponse.new(false, status, json, carrier: @@name, json: json, response: response, request: last_request)
+        return TrackingResponse.new(false, status, json, carrier: "#{@@scac}, #{@@name}", json: json, response: response, request: last_request)
       end
 
       receiver_address = Location.new(
@@ -299,7 +300,7 @@ module ReactiveShipping
         true,
         shipment_events.last.status,
         json,
-        carrier: @@name,
+        carrier: "#{@@scac}, #{@@name}",
         json: json,
         response: response,
         status: status,

@@ -4,8 +4,9 @@ module ReactiveShipping
   class FCSY < CarrierLogistics
     REACTIVE_FREIGHT_CARRIER = true
 
-    cattr_reader :name
+    cattr_reader :name, :scac
     @@name = 'Frontline Freight'
+    @@scac = 'FCSY'
 
     # Documents
 

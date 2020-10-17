@@ -4,8 +4,9 @@ module ReactiveShipping
   class WRDS < ReactiveShipping::Carrier
     REACTIVE_FREIGHT_CARRIER = true
 
-    cattr_reader :name
+    cattr_reader :name, :scac
     @@name = 'Western Regional Delivery Service'
+    @@scac = 'WRDS'
 
     def available_services
       nil
@@ -194,7 +195,7 @@ module ReactiveShipping
         true,
         status,
         { html: html.to_s },
-        carrier: @@name,
+        carrier: "#{@@scac}, #{@@name}",
         html: html,
         response: html.to_s,
         status: status,

@@ -211,7 +211,7 @@ module ReactiveShipping
         true,
         status,
         { html: html.to_s },
-        carrier: self.class.name,
+        carrier: "#{self.class.scac}, #{self.class.name}",
         html: html,
         response: html.to_s,
         status: status,
@@ -287,7 +287,7 @@ module ReactiveShipping
               RateEstimate.new(
                 origin,
                 destination,
-                self.class.name.split('::')[1],
+                self.class,
                 :standard_ltl,
                 transit_days: transit_days,
                 estimate_reference: nil,

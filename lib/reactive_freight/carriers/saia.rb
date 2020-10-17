@@ -4,8 +4,9 @@ module ReactiveShipping
   class SAIA < ReactiveShipping::Carrier
     REACTIVE_FREIGHT_CARRIER = true
 
-    cattr_reader :name
+    cattr_reader :name, :scac
     @@name = 'Saia'
+    @@scac = 'SAIA'
 
     # Documents
 
@@ -146,7 +147,7 @@ module ReactiveShipping
             rate_estimates << RateEstimate.new(
               origin,
               destination,
-              @@name,
+              self.class,
               :standard_ltl,
               transit_days: transit_days,
               estimate_reference: estimate_reference,
@@ -166,7 +167,7 @@ module ReactiveShipping
                 rate_estimates << RateEstimate.new(
                   origin,
                   destination,
-                  @@name,
+                  self.class,
                   service.keys[0],
                   delivery_range: delivery_range,
                   estimate_reference: estimate_reference,
@@ -241,7 +242,7 @@ module ReactiveShipping
     def parse_tracking_response(response)
       unless response.dig(:get_tracking_response, :get_tracking_result, :tracking_status_response)
         status = json.dig('error') || "API Error: HTTP #{response.status[0]}"
-        return TrackingResponse.new(false, status, json, carrier: @@name, json: json, response: response, request: last_request)
+        return TrackingResponse.new(false, status, json, carrier: "#{@@scac}, #{@@name}", json: json, response: response, request: last_request)
       end
 
       search_result = response.dig(:get_tracking_response, :get_tracking_result)
@@ -314,7 +315,7 @@ module ReactiveShipping
         true,
         shipment_events.last.status,
         response,
-        carrier: @@name,
+        carrier: "#{@@scac}, #{@@name}",
         hash: response,
         response: response,
         status: status,

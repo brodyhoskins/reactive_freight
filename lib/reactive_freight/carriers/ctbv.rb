@@ -4,8 +4,9 @@ module ReactiveShipping
   class CTBV < CarrierLogistics
     REACTIVE_FREIGHT_CARRIER = true
 
-    cattr_reader :name
+    cattr_reader :name, :scac
     @@name = 'The Custom Companies'
+    @@scac = 'CTBV'
 
     # Documents
 

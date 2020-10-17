@@ -4,8 +4,9 @@ module ReactiveShipping
   class PENS < ReactiveShipping::Carrier
     REACTIVE_FREIGHT_CARRIER = true
 
-    cattr_reader :name
+    cattr_reader :name, :scac
     @@name = 'Peninsula Truck Lines'
+    @@scac = 'PENS'
 
     def requirements
       %i[username password account]
@@ -102,7 +103,7 @@ module ReactiveShipping
               RateEstimate.new(
                 origin,
                 destination,
-                @@name,
+                self.class,
                 service_type,
                 transit_days: transit_days,
                 estimate_reference: estimate_reference,

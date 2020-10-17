@@ -4,8 +4,9 @@ module ReactiveShipping
   class CLNI < CarrierLogistics
     REACTIVE_FREIGHT_CARRIER = true
 
-    cattr_reader :name
+    cattr_reader :name, :scac
     @@name = 'Clear Lane Freight Systems'
+    @@scac = 'CLNI'
 
     # Documents
 

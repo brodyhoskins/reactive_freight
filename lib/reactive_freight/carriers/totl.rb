@@ -4,8 +4,9 @@ module ReactiveShipping
   class TOTL < CarrierLogistics
     REACTIVE_FREIGHT_CARRIER = true
 
-    cattr_reader :name
+    cattr_reader :name, :scac
     @@name = 'Total Transportation'
+    @@scac = 'TOTL'
 
     def requirements
       %i[username password account]
@@ -66,7 +67,7 @@ module ReactiveShipping
               RateEstimate.new(
                 origin,
                 destination,
-                self.class.name.split('::')[1],
+                self.class,
                 :standard_ltl,
                 transit_days: transit_days,
                 estimate_reference: nil,
