@@ -138,3 +138,23 @@ response = carrier.find_rates(origin, destination, packages, accessorials: acces
 rates = response.rates
 rates = response.rates.sort_by(&:price).collect { |rate| [rate.service_name, rate.price] }
 ```
+
+**Important:** ReactiveFreight returns a `ReactiveShipping::Carrier` class rather than a string with the carrier's name:
+
+```ruby
+rate = rates.first
+rate.carrier
+
+=> "Best Overnite Express" # Old output
+=> ReactiveShipping::BTVP # New output
+
+# To find the relevant information, check the class
+rate.carrier.name
+=> "Best Overnite Express"
+rate.carrier.scac
+=> "BTVP"
+
+# To retain ReactiveShipping behavior
+rate.carrier.is_a?(Class) ? carrier.name : carrier
+=> "Best Overnite Express"
+```
