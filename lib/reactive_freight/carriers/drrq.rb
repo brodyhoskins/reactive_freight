@@ -70,6 +70,11 @@ module ReactiveShipping
         raise ReactiveShipping::ResponseError, "API Error: #{self.class.name}: Document not found"
       end
 
+      unless url.end_with?('.pdf')
+        file = Magick::ImageList.new(file.path)
+        file.write(path)
+      end
+
       File.exist?(path) ? path : false
     end
 
