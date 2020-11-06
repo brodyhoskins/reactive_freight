@@ -97,10 +97,17 @@ module ReactiveShipping
              .set(tracking_number)
       browser.iframe(name: 'AppBody').frame(id: 'Header').button(value: 'Find')
              .click
-      browser.iframe(name: 'AppBody').frame(id: 'Detail')
-             .iframe(id: 'transportsWin')
-             .element(xpath: '/html/body/div/table/tbody/tr[2]/td[1]/span/a[2]')
-             .click
+
+      begin
+        browser.iframe(name: 'AppBody').frame(id: 'Detail')
+               .iframe(id: 'transportsWin')
+               .element(xpath: '/html/body/div/table/tbody/tr[2]/td[1]/span/a[2]')
+               .click
+      rescue StandardError
+        # POD not yet available
+        raise ReactiveShipping::ResponseError, "API Error: #{self.class.name}: Document not found"
+      end
+
       browser.iframe(name: 'AppBody').frame(id: 'Detail')
              .element(xpath: '/html/body/div[1]/div/div/div[1]/div[1]/div[2]/div/a[5]')
              .click
