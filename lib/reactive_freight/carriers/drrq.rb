@@ -52,6 +52,9 @@ module ReactiveShipping
 
     def parse_document_response(type, tracking_number, url, options = {})
       options = @options.merge(options)
+
+      raise ReactiveShipping::ResponseError, "API Error: #{self.class.name}: Document not found" if url.blank?
+
       path = if options[:path].blank?
                File.join(Dir.tmpdir, "#{self.class.name} #{tracking_number} #{type.to_s.upcase}.pdf")
              else
