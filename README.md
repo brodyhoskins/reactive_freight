@@ -35,6 +35,7 @@ Carriers differ from platforms in that they have unique web services whereas pla
 * [Roadrunner Transportation Services](https://www.rrts.com)
 * [Saia](https://www.saia.com)
 * [Southeastern Freight Lines](https://www.sefl.com/)
+* [Tforce Worldwide](https://www.tfwwi.com/) - *formerly DLS Worldwide, ReactiveFreight works with DLS Worldwide API's*
 * [Total Transportation & Distribution](https://www.ttdwest.com)
 * [Western Regional Delivery Service](http://www.wrds.com)
 
