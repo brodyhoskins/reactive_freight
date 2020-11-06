@@ -1,0 +1,6 @@
+:api:
+  :domain: rrd.mercurygate.net
+  :endpoints:
+    :pod: /MercuryGate/login/mgLogin.jsp?inline=true
+  :use_ssl:
+    :pod: true
