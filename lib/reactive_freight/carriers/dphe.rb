@@ -121,7 +121,7 @@ module ReactiveShipping
         else
           cost = response.dig(:get_rates_response, :get_rates_result, :totals)
           if cost
-            cost = cost.sub('$', '').sub('.', '').to_i
+            cost = cost.sub('$', '').sub(',', '').sub('.', '').to_i
             transit_days = response.dig(:get_rates_response, :get_rates_result, :transit_days).to_i
             estimate_reference = response.dig(:get_rates_response, :get_rates_result, :rate_quote_number)
 
