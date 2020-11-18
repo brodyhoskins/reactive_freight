@@ -25,19 +25,21 @@ Carriers differ from platforms in that they have unique web services whereas pla
 
 ### Carriers
 
-* [Best Overnite Express](https://www.bestovernite.com)
-* [Clear Lane Freight Systems](https://clearlanefreight.com)
-* [The Custom Companies](https://www.customco.com)
-* [Dependable Highway Express](https://godependable.com)
-* [Forward Air](https://www.forwardair.com)
-* [Frontline Freight](http://frontlinefreightinc.com)
-* [Peninsula Truck Lines](http://www.peninsulatruck.com/)
-* [Roadrunner Transportation Services](https://www.rrts.com)
-* [Saia](https://www.saia.com)
-* [Southeastern Freight Lines](https://www.sefl.com/)
-* [Tforce Worldwide](https://www.tfwwi.com/) - *formerly DLS Worldwide, ReactiveFreight works with DLS Worldwide API's*
-* [Total Transportation & Distribution](https://www.ttdwest.com)
-* [Western Regional Delivery Service](http://www.wrds.com)
+|Carrier                            |BOL|POD|Rates|Tracking|
+|-----------------------------------|---|---|-----|--------|
+|Best Overnite Express              |✓  |✓  |✓    |✓       |
+|Clear Lane Freight Systems         |✓  |✓  |✓    |✓       |
+|The Custom Companies               |   |   |✓    |✓       |
+|Dependable Highway Express         |   |   |✓    |✓       |
+|Forward Air                        |   |✓  |✓    |✓       |
+|Frontline Freight                  |✓  |✓  |✓    |✓       |
+|Peninsula Truck Lines              |   |   |✓    |        |
+|Roadrunner Transportation Services |✓  |✓  |✓    |✓       |
+|Saia                               |   |   |✓    |✓       |
+|Southeastern Freight Lines         |   |   |✓    |        |
+|Tforce Worldwide                   |   |✓  |     |        |
+|Total Transportation & Distribution|✓  |✓  |✓    |✓       |
+|Western Regional Delivery Service  |   |✓  |     |✓       |
 
 ### Platforms
 
