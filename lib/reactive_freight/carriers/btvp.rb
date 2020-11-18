@@ -183,8 +183,8 @@ module ReactiveShipping
                 _class: package.freight_class,
                 description: 'Freight'.upcase, # Required
                 haz: '', # Y if yes
-                pallets: packages.size,
-                pieces: packages.size,
+                pallets: 1,
+                pieces: 1,
                 weight: package.pounds.ceil
               }
             end
