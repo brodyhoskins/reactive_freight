@@ -2,7 +2,7 @@
 
 module ReactiveShipping
   class CarrierLogistics < ReactiveShipping::Platform
-    ACTIVE_FREIGHT_CARRIER = true
+    REACTIVE_FREIGHT_CARRIER = true
 
     # Documents
     def find_bol(tracking_number, options = {})
