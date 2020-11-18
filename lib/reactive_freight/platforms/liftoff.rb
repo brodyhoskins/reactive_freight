@@ -2,7 +2,7 @@
 
 module ReactiveShipping
   class Liftoff < ReactiveShipping::Platform
-    ACTIVE_FREIGHT_CARRIER = true
+    REACTIVE_FREIGHT_CARRIER = true
 
     JSON_HEADERS = {
       'Accept': 'application/json',
