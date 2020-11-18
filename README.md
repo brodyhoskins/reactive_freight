@@ -158,6 +158,6 @@ rate.carrier.scac
 => "BTVP"
 
 # To retain ReactiveShipping behavior
-rate.carrier.is_a?(Class) ? carrier.name : carrier
+rate.carrier.is_a?(Class) ? rate.carrier.name : rate.carrier
 => "Best Overnite Express"
 ```
