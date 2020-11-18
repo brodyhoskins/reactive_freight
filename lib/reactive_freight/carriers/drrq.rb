@@ -29,7 +29,7 @@ module ReactiveShipping
     protected
 
     def build_url(action, *)
-      url = "#{@conf.dig(:api, :domain)}#{@conf.dig(:api, :endpoints, action)}"
+      url = "#{@conf.dig(:api, :domains, action)}#{@conf.dig(:api, :endpoints, action)}"
     end
 
     def commit(action, options = {})
