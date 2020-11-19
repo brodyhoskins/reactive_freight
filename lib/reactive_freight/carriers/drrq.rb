@@ -185,7 +185,7 @@ module ReactiveShipping
       end
 
       longest_dimension_ft = (packages.inject([]) { |_arr, p| [p.length(:in), p.width(:in)] }.max.ceil.to_f / 12).ceil.to_i
-      if longest_dimension_ft >= 8 && !longest_dimension_ft >= 30
+      if longest_dimension_ft >= 8 && longest_dimension_ft < 30
         accessorials << { ServiceCode: "OVL#{longest_dimension_ft}" }
       end
 
@@ -254,6 +254,7 @@ module ReactiveShipping
       else
         response.each do |response_line|
           next if response_line.dig('Message') # Signifies error
+
           cost = response_line.dig('Total')
           if cost
             cost = (cost.to_f * 100).to_i
