@@ -76,7 +76,7 @@ module ReactiveShipping
                    HTTParty.get(url, headers: headers)
                  end
 
-      JSON.parse(response.body)
+      response.nil? ? nil : JSON.parse(response.body)
     end
 
     def request_url(action)
@@ -253,16 +253,26 @@ module ReactiveShipping
         message = 'API Error: Unknown response'
       else
         response.each do |response_line|
-          puts "================ RESPONSE LINE ================"
           cost = response_line.dig('Total')
           if cost
             cost = (cost.to_f * 100).to_i
+            service = response_line.dig('Charges').map { |charges| charges.dig('Description') }
+            service = case service
+                      when service.any?('Standard LTL Guarantee')
+                        :guaranteed
+                      when service.any?('Guaranteed LTL Service AM')
+                        :guaranteed_am
+                      when service.any?('Guaranteed LTL Service PM')
+                        :guaranteed_pm
+                      else
+                        :standard
+                      end
             transit_days = response_line.dig('ServiceDays').to_i
             rate_estimates << RateEstimate.new(
               origin,
               destination,
               { scac: response_line.dig('Scac'), name: response_line.dig('CarrierName') },
-              :standard,
+              service,
               transit_days: transit_days,
               estimate_reference: nil,
               total_cost: cost,
