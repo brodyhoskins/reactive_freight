@@ -253,6 +253,7 @@ module ReactiveShipping
         message = 'API Error: Unknown response'
       else
         response.each do |response_line|
+          next if response_line.dig('Message') # Signifies error
           cost = response_line.dig('Total')
           if cost
             cost = (cost.to_f * 100).to_i
