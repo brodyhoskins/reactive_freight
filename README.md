@@ -142,22 +142,25 @@ rates = response.rates
 rates = response.rates.sort_by(&:price).collect { |rate| [rate.service_name, rate.price] }
 ```
 
-**Important:** ReactiveFreight returns a `ReactiveShipping::Carrier` class rather than a string with the carrier's name:
+**Important:** A ReactiveFreight `RateEstimate` returns a `Hash` rather than a `String` with the carrier's name; stock ReactiveShipping `RateEstimates` return the latter:
 
 ```ruby
 rate = rates.first
 rate.carrier
 
-=> "Best Overnite Express" # Old output
-=> ReactiveShipping::BTVP # New output
+=> "Best Overnite Express" # ReactiveShipping
+=> {:scac=>"BTVP", :name=>"Best Overnite Express"} # ReactiveFreight
 
-# To find the relevant information, check the class
-rate.carrier.name
+# To find the relevant information, check the hash
+rate.carrier.dig(:name)
 => "Best Overnite Express"
-rate.carrier.scac
+rate.carrier.dig(:scac)
 => "BTVP"
 
-# To retain ReactiveShipping behavior
-rate.carrier.is_a?(Class) ? rate.carrier.name : rate.carrier
+# Maintain compatibility with ReactiveShipping
+rate.carrier.is_a?(Hash) ? rate.carrier.dig(:name) : rate.carrier
 => "Best Overnite Express"
+
+rate.carrier.is_a?(Hash) ? rate.carrier.dig(:scac) : nil
+=> "BTVP"
 ```
