@@ -253,6 +253,7 @@ module ReactiveShipping
         message = 'API Error: Unknown response'
       else
         response.each do |response_line|
+          puts "================ RESPONSE LINE ================"
           cost = response_line.dig('Total')
           if cost
             cost = (cost.to_f * 100).to_i
@@ -261,7 +262,7 @@ module ReactiveShipping
               origin,
               destination,
               { scac: response_line.dig('Scac'), name: response_line.dig('CarrierName') },
-              :standard_ltl, # TODO: Actually check response
+              :standard,
               transit_days: transit_days,
               estimate_reference: nil,
               total_cost: cost,

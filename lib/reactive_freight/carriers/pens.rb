@@ -89,7 +89,7 @@ module ReactiveShipping
         else
           result = response.dig('create_pens_rate_quote_response', 'create_pens_rate_quote_result')
 
-          service_type = :standard_ltl
+          service_type = :standard
           api_service_type = result.dig('quote', 'transit_type')
           @conf.dig(:services, :mappable).each do |key, val|
             service_type = key if api_service_type.downcase.include?(val)

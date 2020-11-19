@@ -112,4 +112,4 @@
     :with_excessive_length_fees: true
 :services:
   :types:
-    - :standard_ltl
+    - :standard

@@ -132,4 +132,4 @@
     :trailer_unloaded: UNL
 :services:
   :types:
-    - :standard_ltl
+    - :standard

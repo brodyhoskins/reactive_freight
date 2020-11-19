@@ -213,7 +213,7 @@ module ReactiveShipping
               origin,
               destination,
               self.class,
-              :standard_ltl,
+              :standard,
               transit_days: transit_days,
               estimate_reference: nil,
               total_cost: cost,

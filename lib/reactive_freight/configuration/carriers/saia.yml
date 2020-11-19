@@ -111,7 +111,7 @@
     :with_excessive_length_fees: true
 :services:
   :types:
-    - :standard_ltl
-    - :guaranteed_ltl
-    - :guaranteed_ltl_am
-    - :guaranteed_ltl_pm
+    - :standard
+    - :guaranteed_delivery
+    - :guaranteed_delivery_am
+    - :guaranteed_delivery_pm

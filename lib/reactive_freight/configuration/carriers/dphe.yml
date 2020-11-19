@@ -121,4 +121,4 @@
     :trailer_unloaded: terminal unload
 :services:
   :types:
-    - :standard_ltl
+    - :standard

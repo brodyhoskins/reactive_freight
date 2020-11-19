@@ -148,7 +148,7 @@ module ReactiveShipping
               origin,
               destination,
               { scac: self.class.scac.upcase, name: self.class.name },
-              :standard_ltl,
+              :standard,
               transit_days: transit_days,
               estimate_reference: estimate_reference,
               total_cost: cost,
