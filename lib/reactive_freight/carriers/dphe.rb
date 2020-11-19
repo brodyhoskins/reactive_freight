@@ -129,7 +129,7 @@ module ReactiveShipping
               RateEstimate.new(
                 origin,
                 destination,
-                self.class,
+                { scac: self.class.scac.upcase, name: self.class.name },
                 :standard_ltl,
                 transit_days: transit_days,
                 estimate_reference: estimate_reference,
