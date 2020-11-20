@@ -8,3 +8,4 @@ Thumbs.db
 
 .ruby-version
 *.gem
+Gemfile*.lock
