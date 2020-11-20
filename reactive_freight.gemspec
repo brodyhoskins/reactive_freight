@@ -30,10 +30,10 @@ Gem::Specification.new do |spec|
   spec.files.reject! { |fn| fn.include? 'CVS' }
   spec.require_paths = ['lib']
 
-  spec.add_dependency 'httparty', '>= 0.10'
-  spec.add_dependency 'reactive_shipping', '~> 3.0'
-  spec.add_dependency 'rmagick', '~> 4.1'
-  spec.add_dependency 'savon', '~> 2.0'
-  spec.add_dependency 'watir', '~> 6.1'
-  spec.add_dependency 'webdrivers', '~> 4.0'
+  spec.add_dependency 'httparty', '~> 0.10'
+  spec.add_dependency 'reactive_shipping', '~> 3.0.0'
+  spec.add_dependency 'rmagick', '~> 4.1.0'
+  spec.add_dependency 'savon', '~> 2.0.0'
+  spec.add_dependency 'watir', '~> 6.1.0'
+  spec.add_dependency 'webdrivers', '~> 4.0.0'
 end
