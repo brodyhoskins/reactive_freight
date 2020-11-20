@@ -52,7 +52,9 @@ module ReactiveShipping
     def commit(action, options = {})
       options = @options.merge(options)
       url = build_url(action, params: options[:params])
-      HTTParty.get(url)
+
+      response = HTTParty.get(url)
+      response.parsed_response if response&.parsed_response
     end
 
     # Documents
@@ -275,7 +277,6 @@ module ReactiveShipping
         success = false
         message = 'API Error: Unknown response'
       else
-        response = response.parsed_response
         if response['error']
           success = false
           message = response['error']

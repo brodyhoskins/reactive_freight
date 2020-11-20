@@ -39,11 +39,13 @@ module ReactiveShipping
       options = @options.merge(options)
       url = request_url(action)
 
-      if @conf.dig(:api, :methods, action) == :post
-        options[:params].blank? ? HTTParty.post(url) : HTTParty.post(url, query: options[:params])
-      else
-        HTTParty.get(url)
-      end
+      response = if @conf.dig(:api, :methods, action) == :post
+                    options[:params].blank? ? HTTParty.post(url) : HTTParty.post(url, query: options[:params])
+                  else
+                    HTTParty.get(url)
+                  end
+
+      response.parsed_response if response&.parsed_response
     end
 
     def request_url(action)

@@ -76,7 +76,7 @@ module ReactiveShipping
                    HTTParty.get(url, headers: headers)
                  end
 
-      response.nil? ? nil : JSON.parse(response.body)
+      JSON.parse(response.body) if response&.body
     end
 
     def request_url(action)

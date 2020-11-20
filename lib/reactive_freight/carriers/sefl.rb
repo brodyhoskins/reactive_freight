@@ -81,7 +81,7 @@ module ReactiveShipping
                    HTTParty.get(url, headers: headers)
                  end
 
-      JSON.parse(response.body)
+      JSON.parse(response.body) if response&.body
     end
 
     # Documents
