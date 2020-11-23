@@ -35,5 +35,5 @@ Gem::Specification.new do |spec|
   spec.add_dependency 'rmagick', '~> 4.1.0'
   spec.add_dependency 'savon', '>= 2.0', '< 2.13'
   spec.add_dependency 'watir', '>= 6.1', '< 6.18'
-  spec.add_dependency 'webdrivers', '~> 4.0.0'
+  spec.add_dependency 'webdrivers', '>= 4.0', '< 4.5'
 end
