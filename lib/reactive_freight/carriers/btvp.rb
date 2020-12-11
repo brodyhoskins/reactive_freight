@@ -54,12 +54,11 @@ module ReactiveShipping
       Savon.client(
         wsdl: build_url(action),
         convert_request_keys_to: :upcase,
-        element_form_default: :qualified,
-        env_namespace: :soapenv,
-        namespaces: @conf.dig(:api, :soap, :namespaces, action)
+        env_namespace: :soapenv
       ).call(
         @conf.dig(:api, :actions, action),
-        attributes: @conf.dig(:api, :soap, :attributes),
+        headers: { 'SOAPAction' => '""' },
+        soap_action: false,
         message: request
       ).body
     end
@@ -160,7 +159,7 @@ module ReactiveShipping
       accessorials = accessorials.uniq.to_a
 
       request = {
-        'ns:args0' => {
+        'arg0' => {
           securityinfo: build_soap_header,
           quote: {
             iam: options[:iam].blank? ? 'D' : options[:iam], # S for shipper, C for consignee, D for third party
@@ -175,7 +174,7 @@ module ReactiveShipping
               zip: destination.to_hash[:postal_code].to_s.upcase
             },
             accessorialcount: accessorials.size,
-            accessorial: accessorials,
+            accessorial: accessorials.blank? ? [] : accessorials,
             ppdcol: options[:payment_type].blank? ? 'P' : options[:payment_type].blank?, # Prepaid
             itemcount: packages.size,
             item: packages.inject([]) do |arr, package|
@@ -279,7 +278,7 @@ module ReactiveShipping
     # Tracking
     def build_tracking_request(tracking_number)
       request = {
-        'ns:args0' => {
+        'arg0' => {
           securityinfo: build_soap_header,
           pronumber: tracking_number
         }

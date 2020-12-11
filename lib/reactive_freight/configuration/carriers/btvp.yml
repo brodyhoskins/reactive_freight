@@ -111,23 +111,13 @@
   :endpoints:
     :bol: /xr0001.pgm
     :pod: /xr0001.pgm
-    :rates: /web/services/TQUOTEAPI?wsdl
-    :track: /web/services/TTRACKAPI?wsdl
+    :rates: /web/services/TQUOTEAPIService/TQUOTEAPI?wsdl
+    :track: /web/services/TTRACKAPIService/TTRACKAPI?wsdl
   :ports:
     :bol: 8090
     :pod: 8090
-    :rates: 10010
-    :track: 10010
-  :soap:
-    :attributes:
-      xmlns:ns: http://tquoteapi.wsbeans.iseries/xsd
-    :namespaces:
-      :rates:
-        xmlns:ns: http://tquoteapi.wsbeans.iseries/xsd
-        xmlns:ins0: http://tquoteapi.wsbeans.iseries/xsd
-      :track:
-        xmlns:ns: http://ttrackapi.wsbeans.iseries/xsd
-        xmlns:ins0: http://ttrackapi.wsbeans.iseries/xsd
+    :rates: 10032
+    :track: 10032
   :use_ssl:
     :rates: false
     :track: false
