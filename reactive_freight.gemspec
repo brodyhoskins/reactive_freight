@@ -3,8 +3,8 @@
 Gem::Specification.new do |spec|
   spec.name = 'reactive_freight'
   spec.license = 'MIT'
-  spec.version = '0.0.1pre'
-  spec.date = '2020-08-08'
+  spec.version = '0.0.1'
+  spec.date = '2021-01-06'
 
   spec.authors = [
     'Brody Hoskins',
@@ -31,7 +31,7 @@ Gem::Specification.new do |spec|
   spec.require_paths = ['lib']
 
   spec.add_dependency 'httparty', '~> 0.10'
-  spec.add_dependency 'reactive_shipping', '~> 3.0.0'
+  spec.add_dependency 'reactive_shipping', '~> 3.0.1'
   spec.add_dependency 'rmagick', '~> 4.1.0'
   spec.add_dependency 'savon', '>= 2.0', '< 2.13'
   spec.add_dependency 'watir', '>= 6.1', '< 6.18'
