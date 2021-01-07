@@ -3,8 +3,8 @@
 Gem::Specification.new do |spec|
   spec.name = 'reactive_freight'
   spec.license = 'MIT'
-  spec.version = '0.0.1'
-  spec.date = '2021-01-06'
+  spec.version = '0.0.2'
+  spec.date = '2021-01-07'
 
   spec.authors = [
     'Brody Hoskins',
