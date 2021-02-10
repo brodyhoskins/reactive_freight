@@ -30,6 +30,17 @@ module ReactiveShipping
       destination = Location.from(destination)
       packages = Array(packages)
 
+      raise "Error: #{@@name}: Pallet count 5+ unsupported" if packages.size >= 5
+      if packages.sum { |p| p.pounds } > 10_000
+        raise "Error: #{@@name}: Weight > 10,000 lbs unsupported"
+      end
+
+      packages.each do |package|
+        if package.height(:inches) > 95
+          raise "Error: #{@@name}: Height > 95 inches unsupported"
+        end
+      end
+
       request = build_rate_request(origin, destination, packages, options)
       parse_rate_response(origin, destination, packages, commit(:rates, request))
     end
