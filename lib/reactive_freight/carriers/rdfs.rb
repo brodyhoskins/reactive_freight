@@ -180,7 +180,11 @@ module ReactiveShipping
             'quote_number'
           )
           if cost
-            cost = cost.to_f * 100
+            cost = if cost.include?('.')
+                     cost.to_f.to_s.delete('.').to_i
+                   else
+                      cost.to_i
+                   end
             rate_estimates = [
               RateEstimate.new(
                 origin,
