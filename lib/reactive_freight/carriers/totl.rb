@@ -33,7 +33,6 @@ module ReactiveShipping
         success = false
         message = 'API Error: Unknown response'
       else
-        response = response.parsed_response
         if response['error']
           success = false
           message = response['error']
