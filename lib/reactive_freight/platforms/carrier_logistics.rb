@@ -262,8 +262,10 @@ module ReactiveShipping
       calculated_accessorials = build_calculated_accessorials(packages, origin, destination)
       accessorials = accessorials + calculated_accessorials unless calculated_accessorials.blank?
 
-      accessorials.uniq!
-      params << accessorials.join unless accessorials.blank?
+      unless accessorials.blank?
+        accessorials.uniq!
+        params << accessorials.join.split('&').uniq.join('&')
+      end
 
       save_request({ params: params })
       params
