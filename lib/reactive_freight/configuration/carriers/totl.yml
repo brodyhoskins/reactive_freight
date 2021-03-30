@@ -7,6 +7,8 @@
     :liftgate_pickup: '&LIFTP=yes'
     :residential_delivery: '&RESI=yes'
     :residential_pickup: '&RESP=yes'
+    :restaurant_delivery: '&IDL=yes&LIFT=yes'
+    :restaurant_pickup: '&IDL=yes&LIFTP=yes'
   # May be inaccurate
   :unquotable:
     - :amusement_park_delivery
@@ -60,8 +62,6 @@
     - :reservation_pickup
     - :resort_delivery
     - :resort_pickup
-    - :restaurant_delivery
-    - :restaurant_pickup
     - :school_delivery
     - :school_pickup
     - :steel_mill_delivery
